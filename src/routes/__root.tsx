@@ -108,12 +108,24 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+import { AuthProvider } from "@/lib/auth-context";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { Toaster } from "@/components/ui/sonner";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <AuthProvider>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1"><Outlet /></main>
+          <Footer />
+        </div>
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
