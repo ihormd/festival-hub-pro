@@ -14,8 +14,8 @@ type Spot = {
   price_cents: number;
 };
 
-const VIEW_W = 1200;
-const VIEW_H = 1500;
+const VIEW_W = 1181;
+const VIEW_H = 1440;
 
 const fillFor = (s: Spot["status"]) =>
   s === "available" ? "fill-emerald-500/70 stroke-emerald-700" :
