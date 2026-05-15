@@ -9,38 +9,293 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VolunteersRouteImport } from './routes/volunteers'
+import { Route as VendorsRouteImport } from './routes/vendors'
+import { Route as SponsorsRouteImport } from './routes/sponsors'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as MerchRouteImport } from './routes/merch'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as FestivalInfoRouteImport } from './routes/festival-info'
+import { Route as EntertainmentRouteImport } from './routes/entertainment'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SponsorApplyRouteImport } from './routes/sponsor.apply'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedApplyVolunteerRouteImport } from './routes/_authenticated/apply.volunteer'
+import { Route as AuthenticatedApplyVendorRouteImport } from './routes/_authenticated/apply.vendor'
+import { Route as AuthenticatedApplyArtistRouteImport } from './routes/_authenticated/apply.artist'
 
+const VolunteersRoute = VolunteersRouteImport.update({
+  id: '/volunteers',
+  path: '/volunteers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendorsRoute = VendorsRouteImport.update({
+  id: '/vendors',
+  path: '/vendors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SponsorsRoute = SponsorsRouteImport.update({
+  id: '/sponsors',
+  path: '/sponsors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MerchRoute = MerchRouteImport.update({
+  id: '/merch',
+  path: '/merch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FestivalInfoRoute = FestivalInfoRouteImport.update({
+  id: '/festival-info',
+  path: '/festival-info',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntertainmentRoute = EntertainmentRouteImport.update({
+  id: '/entertainment',
+  path: '/entertainment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SponsorApplyRoute = SponsorApplyRouteImport.update({
+  id: '/sponsor/apply',
+  path: '/sponsor/apply',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedApplyVolunteerRoute =
+  AuthenticatedApplyVolunteerRouteImport.update({
+    id: '/apply/volunteer',
+    path: '/apply/volunteer',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedApplyVendorRoute =
+  AuthenticatedApplyVendorRouteImport.update({
+    id: '/apply/vendor',
+    path: '/apply/vendor',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedApplyArtistRoute =
+  AuthenticatedApplyArtistRouteImport.update({
+    id: '/apply/artist',
+    path: '/apply/artist',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/entertainment': typeof EntertainmentRoute
+  '/festival-info': typeof FestivalInfoRoute
+  '/login': typeof LoginRoute
+  '/merch': typeof MerchRoute
+  '/signup': typeof SignupRoute
+  '/sponsors': typeof SponsorsRoute
+  '/vendors': typeof VendorsRoute
+  '/volunteers': typeof VolunteersRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/sponsor/apply': typeof SponsorApplyRoute
+  '/apply/artist': typeof AuthenticatedApplyArtistRoute
+  '/apply/vendor': typeof AuthenticatedApplyVendorRoute
+  '/apply/volunteer': typeof AuthenticatedApplyVolunteerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/entertainment': typeof EntertainmentRoute
+  '/festival-info': typeof FestivalInfoRoute
+  '/login': typeof LoginRoute
+  '/merch': typeof MerchRoute
+  '/signup': typeof SignupRoute
+  '/sponsors': typeof SponsorsRoute
+  '/vendors': typeof VendorsRoute
+  '/volunteers': typeof VolunteersRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/sponsor/apply': typeof SponsorApplyRoute
+  '/apply/artist': typeof AuthenticatedApplyArtistRoute
+  '/apply/vendor': typeof AuthenticatedApplyVendorRoute
+  '/apply/volunteer': typeof AuthenticatedApplyVolunteerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/entertainment': typeof EntertainmentRoute
+  '/festival-info': typeof FestivalInfoRoute
+  '/login': typeof LoginRoute
+  '/merch': typeof MerchRoute
+  '/signup': typeof SignupRoute
+  '/sponsors': typeof SponsorsRoute
+  '/vendors': typeof VendorsRoute
+  '/volunteers': typeof VolunteersRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/sponsor/apply': typeof SponsorApplyRoute
+  '/_authenticated/apply/artist': typeof AuthenticatedApplyArtistRoute
+  '/_authenticated/apply/vendor': typeof AuthenticatedApplyVendorRoute
+  '/_authenticated/apply/volunteer': typeof AuthenticatedApplyVolunteerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/entertainment'
+    | '/festival-info'
+    | '/login'
+    | '/merch'
+    | '/signup'
+    | '/sponsors'
+    | '/vendors'
+    | '/volunteers'
+    | '/admin'
+    | '/dashboard'
+    | '/sponsor/apply'
+    | '/apply/artist'
+    | '/apply/vendor'
+    | '/apply/volunteer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/entertainment'
+    | '/festival-info'
+    | '/login'
+    | '/merch'
+    | '/signup'
+    | '/sponsors'
+    | '/vendors'
+    | '/volunteers'
+    | '/admin'
+    | '/dashboard'
+    | '/sponsor/apply'
+    | '/apply/artist'
+    | '/apply/vendor'
+    | '/apply/volunteer'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/entertainment'
+    | '/festival-info'
+    | '/login'
+    | '/merch'
+    | '/signup'
+    | '/sponsors'
+    | '/vendors'
+    | '/volunteers'
+    | '/_authenticated/admin'
+    | '/_authenticated/dashboard'
+    | '/sponsor/apply'
+    | '/_authenticated/apply/artist'
+    | '/_authenticated/apply/vendor'
+    | '/_authenticated/apply/volunteer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  EntertainmentRoute: typeof EntertainmentRoute
+  FestivalInfoRoute: typeof FestivalInfoRoute
+  LoginRoute: typeof LoginRoute
+  MerchRoute: typeof MerchRoute
+  SignupRoute: typeof SignupRoute
+  SponsorsRoute: typeof SponsorsRoute
+  VendorsRoute: typeof VendorsRoute
+  VolunteersRoute: typeof VolunteersRoute
+  SponsorApplyRoute: typeof SponsorApplyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/volunteers': {
+      id: '/volunteers'
+      path: '/volunteers'
+      fullPath: '/volunteers'
+      preLoaderRoute: typeof VolunteersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendors': {
+      id: '/vendors'
+      path: '/vendors'
+      fullPath: '/vendors'
+      preLoaderRoute: typeof VendorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sponsors': {
+      id: '/sponsors'
+      path: '/sponsors'
+      fullPath: '/sponsors'
+      preLoaderRoute: typeof SponsorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/merch': {
+      id: '/merch'
+      path: '/merch'
+      fullPath: '/merch'
+      preLoaderRoute: typeof MerchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/festival-info': {
+      id: '/festival-info'
+      path: '/festival-info'
+      fullPath: '/festival-info'
+      preLoaderRoute: typeof FestivalInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entertainment': {
+      id: '/entertainment'
+      path: '/entertainment'
+      fullPath: '/entertainment'
+      preLoaderRoute: typeof EntertainmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +303,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sponsor/apply': {
+      id: '/sponsor/apply'
+      path: '/sponsor/apply'
+      fullPath: '/sponsor/apply'
+      preLoaderRoute: typeof SponsorApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/apply/volunteer': {
+      id: '/_authenticated/apply/volunteer'
+      path: '/apply/volunteer'
+      fullPath: '/apply/volunteer'
+      preLoaderRoute: typeof AuthenticatedApplyVolunteerRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/apply/vendor': {
+      id: '/_authenticated/apply/vendor'
+      path: '/apply/vendor'
+      fullPath: '/apply/vendor'
+      preLoaderRoute: typeof AuthenticatedApplyVendorRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/apply/artist': {
+      id: '/_authenticated/apply/artist'
+      path: '/apply/artist'
+      fullPath: '/apply/artist'
+      preLoaderRoute: typeof AuthenticatedApplyArtistRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedApplyArtistRoute: typeof AuthenticatedApplyArtistRoute
+  AuthenticatedApplyVendorRoute: typeof AuthenticatedApplyVendorRoute
+  AuthenticatedApplyVolunteerRoute: typeof AuthenticatedApplyVolunteerRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedApplyArtistRoute: AuthenticatedApplyArtistRoute,
+  AuthenticatedApplyVendorRoute: AuthenticatedApplyVendorRoute,
+  AuthenticatedApplyVolunteerRoute: AuthenticatedApplyVolunteerRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  EntertainmentRoute: EntertainmentRoute,
+  FestivalInfoRoute: FestivalInfoRoute,
+  LoginRoute: LoginRoute,
+  MerchRoute: MerchRoute,
+  SignupRoute: SignupRoute,
+  SponsorsRoute: SponsorsRoute,
+  VendorsRoute: VendorsRoute,
+  VolunteersRoute: VolunteersRoute,
+  SponsorApplyRoute: SponsorApplyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
