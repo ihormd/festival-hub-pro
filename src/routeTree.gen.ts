@@ -17,6 +17,8 @@ import { Route as MerchRouteImport } from './routes/merch'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FestivalInfoRouteImport } from './routes/festival-info'
 import { Route as EntertainmentRouteImport } from './routes/entertainment'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SponsorApplyRouteImport } from './routes/sponsor.apply'
@@ -66,6 +68,16 @@ const EntertainmentRoute = EntertainmentRouteImport.update({
   path: '/entertainment',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -111,6 +123,8 @@ const AuthenticatedApplyArtistRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/entertainment': typeof EntertainmentRoute
   '/festival-info': typeof FestivalInfoRoute
   '/login': typeof LoginRoute
@@ -128,6 +142,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/entertainment': typeof EntertainmentRoute
   '/festival-info': typeof FestivalInfoRoute
   '/login': typeof LoginRoute
@@ -147,6 +163,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/entertainment': typeof EntertainmentRoute
   '/festival-info': typeof FestivalInfoRoute
   '/login': typeof LoginRoute
@@ -166,6 +184,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/contact'
     | '/entertainment'
     | '/festival-info'
     | '/login'
@@ -183,6 +203,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/contact'
     | '/entertainment'
     | '/festival-info'
     | '/login'
@@ -201,6 +223,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
+    | '/contact'
     | '/entertainment'
     | '/festival-info'
     | '/login'
@@ -220,6 +244,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   EntertainmentRoute: typeof EntertainmentRoute
   FestivalInfoRoute: typeof FestivalInfoRoute
   LoginRoute: typeof LoginRoute
@@ -287,6 +313,20 @@ declare module '@tanstack/react-router' {
       path: '/entertainment'
       fullPath: '/entertainment'
       preLoaderRoute: typeof EntertainmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -371,6 +411,8 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   EntertainmentRoute: EntertainmentRoute,
   FestivalInfoRoute: FestivalInfoRoute,
   LoginRoute: LoginRoute,
