@@ -16,12 +16,13 @@ export const Route = createFileRoute("/sponsors")({
   }),
 });
 
-const tiers = [
+type Tier = { tier: "bronze"|"silver"|"gold"|"platinum"; name: string; price: number; perks: string[]; featured?: boolean };
+const tiers: Tier[] = [
   { tier: "bronze", name: "Bronze", price: 250, perks: ["Logo on website", "Social media mention", "Festival program listing"] },
   { tier: "silver", name: "Silver", price: 1000, perks: ["All Bronze perks", "Stage shout-out", "Reserved booth space", "Logo on signage"] },
   { tier: "gold", name: "Gold", price: 5000, perks: ["All Silver perks", "Premium booth location", "Headline stage banner", "VIP hospitality"], featured: true },
   { tier: "platinum", name: "Platinum", price: 15000, perks: ["All Gold perks", "Title sponsor naming", "Dedicated press release", "Year-round partnership"] },
-] as const;
+];
 
 type Sponsor = { id: string; name: string; logo_url: string | null; website_url: string | null; level: "platinum"|"gold"|"silver"|"bronze"; sort_order: number };
 
