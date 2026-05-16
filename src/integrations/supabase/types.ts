@@ -65,6 +65,36 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          handled: boolean
+          id: string
+          message: string
+          name: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          handled?: boolean
+          id?: string
+          message: string
+          name: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          handled?: boolean
+          id?: string
+          message?: string
+          name?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
       merch_order_items: {
         Row: {
           id: string
@@ -209,6 +239,60 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      sponsors: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          level: Database["public"]["Enums"]["sponsor_level"]
+          logo_url: string | null
+          name: string
+          sort_order: number
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          level?: Database["public"]["Enums"]["sponsor_level"]
+          logo_url?: string | null
+          name: string
+          sort_order?: number
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          level?: Database["public"]["Enums"]["sponsor_level"]
+          logo_url?: string | null
+          name?: string
+          sort_order?: number
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       sponsorships: {
         Row: {
           amount_cents: number
@@ -260,6 +344,42 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           website_url?: string | null
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          active: boolean
+          bio: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          name: string
+          role: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          bio?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          role: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          bio?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          role?: string
+          sort_order?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -484,6 +604,7 @@ export type Database = {
       application_status: "pending" | "approved" | "rejected" | "cancelled"
       order_status: "pending" | "paid" | "fulfilled" | "cancelled" | "refunded"
       payment_status: "pending" | "paid" | "failed" | "refunded"
+      sponsor_level: "platinum" | "gold" | "silver" | "bronze"
       sponsor_tier: "bronze" | "silver" | "gold" | "platinum" | "custom"
       spot_status: "available" | "pending" | "occupied" | "reserved"
     }
@@ -617,6 +738,7 @@ export const Constants = {
       application_status: ["pending", "approved", "rejected", "cancelled"],
       order_status: ["pending", "paid", "fulfilled", "cancelled", "refunded"],
       payment_status: ["pending", "paid", "failed", "refunded"],
+      sponsor_level: ["platinum", "gold", "silver", "bronze"],
       sponsor_tier: ["bronze", "silver", "gold", "platinum", "custom"],
       spot_status: ["available", "pending", "occupied", "reserved"],
     },
