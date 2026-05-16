@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Festua design system — Ukrainian-Canadian editorial */
+/* NUFF design system — Ukrainian Royal Blue + Sunflower Yellow */
 @theme inline {
   --font-display: "Fraunces", "Cormorant Garamond", "DM Serif Display", ui-serif, Georgia, serif;
   --font-sans: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -55,13 +55,15 @@
   --popover: oklch(1 0 0);
   --popover-foreground: var(--ink);
 
-  --primary: oklch(0.62 0.16 70);          /* deep wheat gold */
+  /* Ukrainian Royal Blue #0057B7 */
+  --primary: oklch(0.42 0.19 255);
   --primary-foreground: oklch(0.99 0.005 90);
-  --wheat: oklch(0.78 0.13 80);
+  --sky: oklch(0.55 0.18 252);
 
-  --secondary: oklch(0.55 0.12 240);        /* festival sky-blue */
-  --secondary-foreground: oklch(0.99 0.005 240);
-  --sky: oklch(0.62 0.14 235);
+  /* Sunflower Yellow #FFD700 */
+  --secondary: oklch(0.88 0.18 95);
+  --secondary-foreground: oklch(0.20 0.04 255);
+  --wheat: oklch(0.88 0.18 95);
 
   --muted: oklch(0.94 0.012 85);
   --muted-foreground: oklch(0.45 0.02 65);
@@ -76,11 +78,11 @@
 
   --border: oklch(0.88 0.015 75);
   --input: oklch(0.92 0.012 75);
-  --ring: oklch(0.62 0.16 70);
+  --ring: oklch(0.42 0.19 255);
 
   --shadow-soft: 0 4px 24px -8px oklch(0.18 0.025 60 / 0.12);
-  --shadow-glow: 0 20px 60px -20px oklch(0.62 0.16 70 / 0.45);
-  --gradient-hero: linear-gradient(135deg, oklch(0.62 0.16 70) 0%, oklch(0.55 0.12 240) 100%);
+  --shadow-glow: 0 20px 60px -20px oklch(0.42 0.19 255 / 0.45);
+  --gradient-hero: linear-gradient(135deg, oklch(0.42 0.19 255) 0%, oklch(0.88 0.18 95) 100%);
   --gradient-warm: linear-gradient(180deg, oklch(0.97 0.018 85) 0%, oklch(0.92 0.03 78) 100%);
 }
 
@@ -136,7 +138,7 @@
     @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
   }
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--secondary)];
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--primary)];
   }
   .display-xl {
     @apply font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.02] font-medium;
@@ -145,12 +147,16 @@
     @apply font-display text-4xl sm:text-5xl leading-[1.05] font-medium;
   }
   .ribbon {
-    background: repeating-linear-gradient(
+    background: linear-gradient(
       90deg,
-      var(--accent) 0 18px,
-      var(--primary) 18px 24px,
-      var(--secondary) 24px 32px,
-      var(--accent) 32px 50px
+      #0057B7 0 50%,
+      #FFD700 50% 100%
     );
   }
 }
+
+@keyframes spot-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.spot-pulse { transform-box: fill-box; transform-origin: center; animation: spot-pulse 2.2s ease-in-out infinite; }
