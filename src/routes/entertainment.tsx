@@ -8,8 +8,8 @@ export const Route = createFileRoute("/entertainment")({
   component: Entertainment,
   head: () => ({
     meta: [
-      { title: "Entertainment — Festua" },
-      { name: "description", content: "Live Ukrainian music, traditional dance, kids' zone, and cultural workshops at Festua." },
+      { title: "Entertainment — NUFF" },
+      { name: "description", content: "Live Ukrainian music, traditional dance, kids' zone, and cultural workshops at NUFF." },
     ],
   }),
 });

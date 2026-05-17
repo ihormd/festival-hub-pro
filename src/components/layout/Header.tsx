@@ -1,24 +1,29 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, User as UserIcon, ShoppingBag } from "lucide-react";
+import { Menu, X, User as UserIcon, ShoppingBag, ChevronDown } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart-store";
 import logo from "@/assets/nuff-logo.png";
 
-const nav = [
-  { to: "/festival-info", label: "Festival Info" },
+const mainNav = [
+  { to: "/festival", label: "Festival" },
   { to: "/entertainment", label: "Entertainment" },
-  { to: "/vendors", label: "Vendors" },
-  { to: "/volunteers", label: "Volunteers" },
-  { to: "/sponsors", label: "Sponsors" },
   { to: "/merch", label: "Merch" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
+const involvedNav = [
+  { to: "/artists", label: "Artists", desc: "Apply to perform on stage" },
+  { to: "/vendors", label: "Vendors", desc: "Reserve a booth on the live map" },
+  { to: "/volunteers", label: "Volunteers", desc: "Pick a shift, choose your role" },
+  { to: "/sponsors", label: "Sponsors", desc: "Partner with NUFF 2026" },
+] as const;
+
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [involvedOpen, setInvolvedOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
   const items = useCart();
   const cartCount = items.reduce((s, i) => s + i.qty, 0);
@@ -26,16 +31,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-[color:var(--border)] bg-[color:var(--background)]/90 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/75">
       <div className="container-page flex h-20 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-3 group shrink-0">
-          <img src={logo} alt="NUFF — Niagara Ukrainian Family Festival" className="h-12 w-auto" />
-          <span className="hidden sm:flex flex-col leading-tight">
-            <span className="font-display text-xl font-bold tracking-tight text-[color:var(--primary)]">NUFF</span>
-            <span className="text-[10px] uppercase tracking-[0.14em] text-[color:var(--muted-foreground)] -mt-0.5">Niagara Ukrainian Festival</span>
-          </span>
+        <Link to="/" className="flex items-center shrink-0" aria-label="NUFF home">
+          <img src={logo} alt="NUFF — Niagara Ukrainian Family Festival" className="h-14 w-auto" />
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-6">
-          {nav.map((n) => (
+        <nav className="hidden lg:flex items-center gap-7">
+          {mainNav.map((n) => (
             <Link
               key={n.to}
               to={n.to}
@@ -45,6 +46,37 @@ export function Header() {
               {n.label}
             </Link>
           ))}
+
+          {/* Get Involved dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setInvolvedOpen(true)}
+            onMouseLeave={() => setInvolvedOpen(false)}
+          >
+            <button
+              onClick={() => setInvolvedOpen((o) => !o)}
+              className="inline-flex items-center gap-1 text-sm font-medium text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors"
+            >
+              Get Involved <ChevronDown className={`h-4 w-4 transition-transform ${involvedOpen ? "rotate-180" : ""}`} />
+            </button>
+            {involvedOpen && (
+              <div className="absolute right-0 top-full pt-3 w-72 z-50">
+                <div className="rounded-xl border border-[color:var(--border)] bg-[color:var(--card)] shadow-lg p-2">
+                  {involvedNav.map((n) => (
+                    <Link
+                      key={n.to}
+                      to={n.to}
+                      onClick={() => setInvolvedOpen(false)}
+                      className="block rounded-lg px-3 py-2.5 hover:bg-[color:var(--muted)] transition-colors"
+                    >
+                      <div className="font-semibold text-sm">{n.label}</div>
+                      <div className="text-xs text-[color:var(--muted-foreground)] mt-0.5">{n.desc}</div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
@@ -67,19 +99,22 @@ export function Header() {
           )}
         </div>
 
-        <button onClick={() => setOpen(!open)} className="xl:hidden md:hidden p-2 -mr-2" aria-label="Menu">
+        <button onClick={() => setOpen(!open)} className="lg:hidden p-2 -mr-2" aria-label="Menu">
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-        <button onClick={() => setOpen(!open)} className="hidden md:flex xl:hidden p-2" aria-label="Menu">
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {open && (
-        <div className="xl:hidden border-t border-[color:var(--border)] bg-[color:var(--background)]">
+        <div className="lg:hidden border-t border-[color:var(--border)] bg-[color:var(--background)]">
           <div className="container-page py-4 flex flex-col gap-1">
-            {nav.map((n) => (
+            {mainNav.map((n) => (
               <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="px-2 py-2.5 rounded-md text-base font-medium hover:bg-[color:var(--muted)]">
+                {n.label}
+              </Link>
+            ))}
+            <div className="px-2 pt-3 pb-1 text-xs uppercase tracking-wider text-[color:var(--muted-foreground)] font-semibold">Get Involved</div>
+            {involvedNav.map((n) => (
+              <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="px-2 py-2 rounded-md text-base hover:bg-[color:var(--muted)]">
                 {n.label}
               </Link>
             ))}

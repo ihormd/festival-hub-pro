@@ -18,10 +18,8 @@ type Spot = {
 const VIEW_W = 1181;
 const VIEW_H = 1440;
 
-const fillFor = (s: Spot["status"]) =>
-  s === "available" ? "fill-emerald-500/75 stroke-emerald-700 hover:fill-emerald-400" :
-  s === "pending"   ? "fill-amber-400/75 stroke-amber-700" :
-                      "fill-rose-500/75 stroke-rose-700";
+const dotFill = (s: Spot["status"]) =>
+  s === "available" ? "#10b981" : s === "pending" ? "#f59e0b" : "#ef4444";
 
 export function VendorMap() {
   const [spots, setSpots] = useState<Spot[]>([]);
@@ -50,14 +48,31 @@ export function VendorMap() {
           <image href={festivalMap} x={0} y={0} width={VIEW_W} height={VIEW_H} preserveAspectRatio="xMidYMid slice" />
           {spots.map((s) => {
             const isHighlight = highlight === s.id;
+            const cx = s.x + s.w / 2;
+            const cy = s.y + s.h / 2;
+            const r = 18;
+            const fill = dotFill(s.status);
             return (
               <g key={s.id} onClick={() => setSelected(s)} className="cursor-pointer">
-                <rect
-                  x={s.x} y={s.y} width={s.w} height={s.h} rx={4}
-                  className={`${fillFor(s.status)} ${s.status === "available" ? "spot-pulse" : ""} ${isHighlight ? "stroke-[5px]" : "stroke-2"} transition-all`}
-                  style={isHighlight ? { filter: "drop-shadow(0 0 6px #FFD700)" } : undefined}
+                {/* Soft halo on highlight */}
+                {isHighlight && (
+                  <circle cx={cx} cy={cy} r={r + 10} fill={fill} opacity={0.25} />
+                )}
+                {/* Pulse ring on available spots */}
+                {s.status === "available" && (
+                  <circle cx={cx} cy={cy} r={r + 4} fill="none" stroke={fill} strokeWidth={2} opacity={0.55} className="spot-pulse" />
+                )}
+                {/* Semi-transparent badge dot */}
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={r}
+                  fill={fill}
+                  fillOpacity={0.78}
+                  stroke="white"
+                  strokeWidth={isHighlight ? 3 : 2}
                 />
-                <text x={s.x + s.w / 2} y={s.y + s.h / 2 + 5} textAnchor="middle" className="fill-white font-bold pointer-events-none" style={{ fontSize: 14 }}>
+                <text x={cx} y={cy + 4} textAnchor="middle" className="fill-white font-bold pointer-events-none" style={{ fontSize: 13 }}>
                   {s.code}
                 </text>
               </g>

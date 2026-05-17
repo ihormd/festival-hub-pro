@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 
 export type CartItem = { id: string; name: string; price_cents: number; image_url?: string | null; qty: number };
 
-const KEY = "festua_cart_v1";
+const KEY = "nuff_cart_v1";
 const listeners = new Set<() => void>();
 let items: CartItem[] = typeof window !== "undefined" ? JSON.parse(localStorage.getItem(KEY) || "[]") : [];
 

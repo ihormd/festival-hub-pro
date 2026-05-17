@@ -15,9 +15,10 @@ import { Route as SponsorsRouteImport } from './routes/sponsors'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as MerchRouteImport } from './routes/merch'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as FestivalInfoRouteImport } from './routes/festival-info'
+import { Route as FestivalRouteImport } from './routes/festival'
 import { Route as EntertainmentRouteImport } from './routes/entertainment'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ArtistsRouteImport } from './routes/artists'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
@@ -58,9 +59,9 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FestivalInfoRoute = FestivalInfoRouteImport.update({
-  id: '/festival-info',
-  path: '/festival-info',
+const FestivalRoute = FestivalRouteImport.update({
+  id: '/festival',
+  path: '/festival',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EntertainmentRoute = EntertainmentRouteImport.update({
@@ -71,6 +72,11 @@ const EntertainmentRoute = EntertainmentRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArtistsRoute = ArtistsRouteImport.update({
+  id: '/artists',
+  path: '/artists',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -124,9 +130,10 @@ const AuthenticatedApplyArtistRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/artists': typeof ArtistsRoute
   '/contact': typeof ContactRoute
   '/entertainment': typeof EntertainmentRoute
-  '/festival-info': typeof FestivalInfoRoute
+  '/festival': typeof FestivalRoute
   '/login': typeof LoginRoute
   '/merch': typeof MerchRoute
   '/signup': typeof SignupRoute
@@ -143,9 +150,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/artists': typeof ArtistsRoute
   '/contact': typeof ContactRoute
   '/entertainment': typeof EntertainmentRoute
-  '/festival-info': typeof FestivalInfoRoute
+  '/festival': typeof FestivalRoute
   '/login': typeof LoginRoute
   '/merch': typeof MerchRoute
   '/signup': typeof SignupRoute
@@ -164,9 +172,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
+  '/artists': typeof ArtistsRoute
   '/contact': typeof ContactRoute
   '/entertainment': typeof EntertainmentRoute
-  '/festival-info': typeof FestivalInfoRoute
+  '/festival': typeof FestivalRoute
   '/login': typeof LoginRoute
   '/merch': typeof MerchRoute
   '/signup': typeof SignupRoute
@@ -185,9 +194,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/artists'
     | '/contact'
     | '/entertainment'
-    | '/festival-info'
+    | '/festival'
     | '/login'
     | '/merch'
     | '/signup'
@@ -204,9 +214,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/artists'
     | '/contact'
     | '/entertainment'
-    | '/festival-info'
+    | '/festival'
     | '/login'
     | '/merch'
     | '/signup'
@@ -224,9 +235,10 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
+    | '/artists'
     | '/contact'
     | '/entertainment'
-    | '/festival-info'
+    | '/festival'
     | '/login'
     | '/merch'
     | '/signup'
@@ -245,9 +257,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
+  ArtistsRoute: typeof ArtistsRoute
   ContactRoute: typeof ContactRoute
   EntertainmentRoute: typeof EntertainmentRoute
-  FestivalInfoRoute: typeof FestivalInfoRoute
+  FestivalRoute: typeof FestivalRoute
   LoginRoute: typeof LoginRoute
   MerchRoute: typeof MerchRoute
   SignupRoute: typeof SignupRoute
@@ -301,11 +314,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/festival-info': {
-      id: '/festival-info'
-      path: '/festival-info'
-      fullPath: '/festival-info'
-      preLoaderRoute: typeof FestivalInfoRouteImport
+    '/festival': {
+      id: '/festival'
+      path: '/festival'
+      fullPath: '/festival'
+      preLoaderRoute: typeof FestivalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/entertainment': {
@@ -320,6 +333,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/artists': {
+      id: '/artists'
+      path: '/artists'
+      fullPath: '/artists'
+      preLoaderRoute: typeof ArtistsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -412,9 +432,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
+  ArtistsRoute: ArtistsRoute,
   ContactRoute: ContactRoute,
   EntertainmentRoute: EntertainmentRoute,
-  FestivalInfoRoute: FestivalInfoRoute,
+  FestivalRoute: FestivalRoute,
   LoginRoute: LoginRoute,
   MerchRoute: MerchRoute,
   SignupRoute: SignupRoute,

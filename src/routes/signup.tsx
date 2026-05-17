@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/signup")({
   component: SignupPage,
-  head: () => ({ meta: [{ title: "Create account — Festua" }] }),
+  head: () => ({ meta: [{ title: "Create account — NUFF" }] }),
 });
 
 function SignupPage() {
@@ -44,7 +44,7 @@ function SignupPage() {
 
   return (
     <div className="container-page py-16 max-w-md">
-      <h1 className="font-display text-3xl font-semibold mb-2">Join Festua</h1>
+      <h1 className="font-display text-3xl font-semibold mb-2">Join NUFF</h1>
       <p className="text-sm text-[color:var(--muted-foreground)] mb-8">One account for vendor, artist, volunteer, and donor flows.</p>
       <Button variant="outline" className="w-full mb-4" onClick={onGoogle}>Continue with Google</Button>
       <div className="relative my-6 text-center text-xs uppercase tracking-widest text-[color:var(--muted-foreground)]">

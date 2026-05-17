@@ -3,8 +3,11 @@ import { ArrowRight, MapPin, Calendar, Music, ShoppingBag, HandHeart, Store } fr
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/nuff-logo.png";
+import foodImg from "@/assets/food-vendors.jpg";
+import musicImg from "@/assets/stage-performance.jpg";
+import cultureImg from "@/assets/culture-pysanky.jpg";
+import familyImg from "@/assets/hero-festival.jpg";
 import { useSiteSettings } from "@/lib/site-content";
-import { TeamSection } from "@/components/festival/TeamSection";
 import { PartnersStrip } from "@/components/festival/PartnersStrip";
 
 export const Route = createFileRoute("/")({
@@ -20,81 +23,92 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const pillars = [
+  { img: foodImg, title: "Food", body: "Pierogi, holubtsi, varenyky, and wood-fired specialties from family kitchens." },
+  { img: musicImg, title: "Music", body: "Folk ensembles, bandura sets, and modern Ukrainian artists across two stages." },
+  { img: cultureImg, title: "Culture", body: "Pysanky workshops, vyshyvanka parades, dance showcases, and craft markets." },
+  { img: familyImg, title: "Family", body: "Kids' Zone, splash pad, free programming — built for every generation." },
+];
+
 function Home() {
   const s = useSiteSettings();
   return (
     <>
-      {/* Hero */}
+      {/* Hero — centered, responsive logo */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[color:var(--cream)] via-[color:var(--background)] to-[color:var(--cream)]">
-        <div className="container-page pt-16 pb-24 lg:pt-24 lg:pb-32 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="container-page pt-12 pb-16 lg:pt-20 lg:pb-24 flex flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full flex justify-center"
+          >
+            <img
+              src={logo}
+              alt="NUFF — Niagara Ukrainian Family Festival"
+              className="w-56 sm:w-72 md:w-80 lg:w-96 h-auto drop-shadow-2xl"
+            />
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+            className="mt-8 max-w-3xl"
           >
-            <div className="ribbon h-1 w-24 rounded-full mb-6" />
+            <div className="ribbon h-1 w-24 rounded-full mb-6 mx-auto" />
             <p className="eyebrow">{s.festival_dates} · Fireman's Park</p>
             <h1 className="display-xl mt-3 text-[color:var(--foreground)]">
-              <span className="text-[color:var(--primary)]">N</span>iagara <span className="text-[color:var(--secondary)] [text-shadow:0_1px_0_var(--foreground)]">U</span>krainian <br className="hidden sm:block" />Family <span className="italic">Festival</span>
+              <span className="text-[color:var(--primary)]">Niagara</span> Ukrainian <span className="italic">Family Festival</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-[color:var(--muted-foreground)]">
+            <p className="mt-6 text-lg text-[color:var(--muted-foreground)]">
               {s.hero_subtitle}
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-9 flex flex-wrap justify-center gap-3">
               <Link to="/vendors">
                 <motion.div whileTap={{ scale: 0.95 }}>
                   <Button size="lg" className="rounded-full px-7">Book a vendor spot <ArrowRight className="ml-2 h-4 w-4" /></Button>
                 </motion.div>
               </Link>
-              <Link to="/festival-info">
+              <Link to="/festival">
                 <motion.div whileTap={{ scale: 0.95 }}>
                   <Button size="lg" variant="outline" className="rounded-full px-7">Festival info</Button>
                 </motion.div>
               </Link>
             </div>
-            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-[color:var(--muted-foreground)]">
+            <div className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-[color:var(--muted-foreground)]">
               <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-[color:var(--primary)]" /> {s.festival_dates}</span>
               <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-[color:var(--primary)]" /> {s.location_name}, Niagara Falls</span>
             </div>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 1 }}
-            animate={{ opacity: 1, scale: 1.05 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex justify-center"
-          >
-            <img src={logo} alt="NUFF official mark" className="w-full max-w-md drop-shadow-2xl" />
-          </motion.div>
         </div>
       </section>
 
-      {/* Pillars */}
+      {/* What Awaits You — 4 image cards */}
       <section className="container-page py-20 lg:py-28">
         <div className="max-w-2xl">
-          <p className="eyebrow">What awaits</p>
+          <p className="eyebrow">What awaits you</p>
           <h2 className="display-lg mt-2">A weekend rooted in tradition, alive with the new.</h2>
         </div>
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12 } } }}
-          className="mt-12 grid gap-6 md:grid-cols-3"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+          className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {[
-            { icon: Music, title: "Live stages", body: "Folk ensembles, modern Ukrainian artists, and rising Canadian voices across two stages." },
-            { icon: ShoppingBag, title: "Artisan market", body: "Hand-embroidered linens, ceramics, pysanky, and contemporary makers — all in one square." },
-            { icon: HandHeart, title: "Community first", body: "A nonprofit-led gathering. Volunteers and sponsors keep the festival open to families." },
-          ].map(({ icon: Icon, title, body }) => (
+          {pillars.map((p) => (
             <motion.div
-              key={title}
+              key={p.title}
               variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
-              className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-7 shadow-[var(--shadow-soft)]"
+              className="group rounded-2xl overflow-hidden border border-[color:var(--border)] bg-[color:var(--card)] shadow-[var(--shadow-soft)]"
             >
-              <Icon className="h-7 w-7 text-[color:var(--primary)]" />
-              <h3 className="mt-5 font-display text-2xl">{title}</h3>
-              <p className="mt-2 text-sm text-[color:var(--muted-foreground)] leading-relaxed">{body}</p>
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <img src={p.img} alt={p.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <h3 className="absolute bottom-3 left-4 font-display text-2xl text-white">{p.title}</h3>
+              </div>
+              <p className="p-5 text-sm text-[color:var(--muted-foreground)] leading-relaxed">{p.body}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -112,7 +126,7 @@ function Home() {
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {[
               { to: "/vendors", title: "Vendors", body: "Reserve a booth on the live festival map.", icon: Store },
-              { to: "/entertainment", title: "Artists", body: "Perform on the main or community stage.", icon: Music },
+              { to: "/artists", title: "Artists", body: "Perform on the main or community stage.", icon: Music },
               { to: "/volunteers", title: "Volunteers", body: "Pick a shift, choose your area.", icon: HandHeart },
               { to: "/sponsors", title: "Sponsors", body: "Bronze to Platinum tiers + custom.", icon: ShoppingBag },
             ].map(({ to, title, body, icon: Icon }) => (
@@ -128,8 +142,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-      <TeamSection />
 
       <PartnersStrip />
     </>

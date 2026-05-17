@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/apply/vendor")({
   component: VendorApply,
-  head: () => ({ meta: [{ title: "Vendor Application — Festua" }] }),
+  head: () => ({ meta: [{ title: "Vendor Application — NUFF" }] }),
 });
 
 function VendorApply() {

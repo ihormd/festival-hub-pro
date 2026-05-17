@@ -10,10 +10,8 @@ export function PartnersStrip() {
     supabase.from("sponsors").select("*").eq("active", true).order("sort_order").then(({ data }) => setSponsors((data as Sponsor[]) ?? []));
   }, []);
 
-  const sized = (l: Sponsor["level"]) =>
-    l === "platinum" ? "h-24 sm:h-28" :
-    l === "gold" ? "h-20 sm:h-24" :
-    "h-16 sm:h-20";
+  // Duplicate the list so the marquee loops seamlessly
+  const loop = sponsors.length > 0 ? [...sponsors, ...sponsors] : [];
 
   return (
     <section className="bg-[color:var(--cream)] border-y border-[color:var(--border)]">
@@ -27,22 +25,29 @@ export function PartnersStrip() {
             Become a sponsor →
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 items-center">
-          {sponsors.map((sp) => {
-            const inner = sp.logo_url ? (
-              <img src={sp.logo_url} alt={sp.name} className={`${sized(sp.level)} w-auto object-contain mx-auto grayscale hover:grayscale-0 transition`} />
-            ) : (
-              <div className={`${sized(sp.level)} w-full rounded-lg bg-white border border-dashed border-[color:var(--border)] grid place-items-center px-4 text-center text-xs font-semibold uppercase tracking-wider text-[color:var(--muted-foreground)]`}>
-                {sp.name}
-              </div>
-            );
-            return sp.website_url ? (
-              <a key={sp.id} href={sp.website_url} target="_blank" rel="noopener noreferrer" className="block">{inner}</a>
-            ) : (
-              <div key={sp.id}>{inner}</div>
-            );
-          })}
-        </div>
+
+        {sponsors.length === 0 ? (
+          <p className="text-sm text-[color:var(--muted-foreground)]">Partner roster coming soon.</p>
+        ) : (
+          <div className="marquee-mask overflow-hidden">
+            <div className="animate-marquee flex w-max items-center gap-12 lg:gap-16">
+              {loop.map((sp, i) => {
+                const inner = sp.logo_url ? (
+                  <img src={sp.logo_url} alt={sp.name} className="h-16 sm:h-20 w-auto object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition" />
+                ) : (
+                  <div className="h-16 sm:h-20 min-w-[180px] rounded-lg bg-white border border-dashed border-[color:var(--border)] grid place-items-center px-6 text-center text-xs font-semibold uppercase tracking-wider text-[color:var(--muted-foreground)]">
+                    {sp.name}
+                  </div>
+                );
+                return sp.website_url ? (
+                  <a key={`${sp.id}-${i}`} href={sp.website_url} target="_blank" rel="noopener noreferrer" className="shrink-0">{inner}</a>
+                ) : (
+                  <div key={`${sp.id}-${i}`} className="shrink-0">{inner}</div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
