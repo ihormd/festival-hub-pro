@@ -4,7 +4,7 @@ import { Store, Music, HandHeart, Heart, ShoppingBag, Map } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
-  head: () => ({ meta: [{ title: "Dashboard — Festua" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — NUFF" }] }),
 });
 
 const cards = [

@@ -16,7 +16,7 @@ type Shift = { id: string; area: string; description: string | null; starts_at: 
 
 export const Route = createFileRoute("/_authenticated/apply/volunteer")({
   component: VolunteerApply,
-  head: () => ({ meta: [{ title: "Volunteer Application — Festua" }] }),
+  head: () => ({ meta: [{ title: "Volunteer Application — NUFF" }] }),
 });
 
 function VolunteerApply() {

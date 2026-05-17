@@ -14,7 +14,7 @@ export const Route = createFileRoute("/merch")({
   component: MerchPage,
   head: () => ({
     meta: [
-      { title: "Merch Store — Festua" },
+      { title: "Merch Store — NUFF" },
       { name: "description", content: "Festival apparel, vyshyvanka-inspired prints, mugs, and gifts. Free shipping in Canada over $75." },
     ],
   }),

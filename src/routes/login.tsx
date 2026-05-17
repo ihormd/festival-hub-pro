@@ -12,7 +12,7 @@ const search = z.object({ redirect: z.string().optional() });
 export const Route = createFileRoute("/login")({
   validateSearch: (s) => search.parse(s),
   component: LoginPage,
-  head: () => ({ meta: [{ title: "Sign in — Festua" }] }),
+  head: () => ({ meta: [{ title: "Sign in — NUFF" }] }),
 });
 
 function LoginPage() {

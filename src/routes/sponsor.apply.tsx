@@ -15,7 +15,7 @@ const tierPrices: Record<string, number> = { bronze: 25000, silver: 100000, gold
 export const Route = createFileRoute("/sponsor/apply")({
   validateSearch: (s) => z.object({ tier: z.enum(["bronze", "silver", "gold", "platinum"]).default("bronze") }).parse(s),
   component: SponsorApply,
-  head: () => ({ meta: [{ title: "Become a Sponsor — Festua" }] }),
+  head: () => ({ meta: [{ title: "Become a Sponsor — NUFF" }] }),
 });
 
 function SponsorApply() {

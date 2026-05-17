@@ -7,8 +7,8 @@ export const Route = createFileRoute("/volunteers")({
   component: VolunteersPage,
   head: () => ({
     meta: [
-      { title: "Volunteer — Festua" },
-      { name: "description", content: "Join the Festua volunteer crew. Pick shifts, choose your area of interest, and help create unforgettable cultural moments." },
+      { title: "Volunteer — NUFF" },
+      { name: "description", content: "Join the NUFF volunteer crew. Pick shifts, choose your area of interest, and help create unforgettable cultural moments." },
     ],
   }),
 });
@@ -23,7 +23,7 @@ const perks = [
 function VolunteersPage() {
   return (
     <>
-      <PageHeader eyebrow="Crew up" title="Volunteer with Festua" subtitle="Help us run the most welcoming festival in the region." />
+      <PageHeader eyebrow="Crew up" title="Volunteer with NUFF" subtitle="Help us run the most welcoming festival in the region." />
       <section className="container-page py-16">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {perks.map((p) => (

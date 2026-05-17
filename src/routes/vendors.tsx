@@ -7,9 +7,9 @@ export const Route = createFileRoute("/vendors")({
   component: VendorsPage,
   head: () => ({
     meta: [
-      { title: "Vendors — Interactive Booth Map | Festua" },
-      { name: "description", content: "Pick your booth on Festua's live festival map. Real-time availability for food, retail, and sponsor spots." },
-      { property: "og:title", content: "Vendor Booth Map — Festua" },
+      { title: "Vendors — Interactive Booth Map | NUFF" },
+      { name: "description", content: "Pick your booth on NUFF's live festival map. Real-time availability for food, retail, and sponsor spots." },
+      { property: "og:title", content: "Vendor Booth Map — NUFF" },
     ],
   }),
 });

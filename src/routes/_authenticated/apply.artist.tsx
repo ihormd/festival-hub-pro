@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/apply/artist")({
   component: ArtistApply,
-  head: () => ({ meta: [{ title: "Artist Application — Festua" }] }),
+  head: () => ({ meta: [{ title: "Artist Application — NUFF" }] }),
 });
 
 function ArtistApply() {
