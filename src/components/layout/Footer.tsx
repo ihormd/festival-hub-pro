@@ -23,7 +23,7 @@ export function Footer() {
         <div>
           <div className="eyebrow mb-3">Festival</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/festival-info">Schedule & Location</Link></li>
+            <li><Link to="/festival">Schedule & Location</Link></li>
             <li><Link to="/entertainment">Entertainment</Link></li>
             <li><Link to="/merch">Merch Store</Link></li>
             <li><Link to="/about">About NUFF</Link></li>
