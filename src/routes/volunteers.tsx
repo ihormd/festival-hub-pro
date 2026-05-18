@@ -31,10 +31,9 @@ const ROLES = [
 ];
 
 const DAYS = [
-  { value: "fri", label: "Friday · July 17" },
-  { value: "sat", label: "Saturday · July 18" },
-  { value: "sun", label: "Sunday · July 19" },
-  { value: "all", label: "All weekend" },
+  { value: "sun-jul-12", label: "Sunday · July 12" },
+  { value: "mon-jul-13", label: "Monday · July 13" },
+  { value: "both", label: "Both days" },
 ];
 
 function VolunteersPage() {
