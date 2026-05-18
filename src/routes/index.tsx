@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, MapPin, Calendar, Music, ShoppingBag, HandHeart, Store, Award, Users, Mic2, PartyPopper } from "lucide-react";
+import { ArrowRight, MapPin, Calendar, Music, HandHeart, Store, Award, Users, Mic2, PartyPopper } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/nuff-logo.png";
