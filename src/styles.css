@@ -6,7 +6,7 @@
 
 /* NUFF design system — Ukrainian Royal Blue + Sunflower Yellow */
 @theme inline {
-  --font-display: "Fraunces", "Cormorant Garamond", "DM Serif Display", ui-serif, Georgia, serif;
+  --font-display: "Montserrat", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
 
   --radius-sm: 0.25rem;
@@ -44,9 +44,9 @@
 }
 
 :root {
-  /* Warm cream paper, deep ink, wheat-gold primary, festival sky-blue accent */
-  --background: oklch(0.985 0.012 85);
-  --cream: oklch(0.97 0.018 85);
+  /* Light-cream paper #FFFDF5, deep ink, royal-blue primary, sunflower accent */
+  --background: oklch(0.992 0.012 95);
+  --cream: oklch(0.975 0.020 92);
   --foreground: oklch(0.18 0.025 60);
   --ink: oklch(0.16 0.02 60);
 
@@ -109,7 +109,7 @@
 }
 
 /* Google fonts */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap");
 
 @layer base {
   * {
@@ -141,10 +141,10 @@
     @apply text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--primary)];
   }
   .display-xl {
-    @apply font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.02] font-medium;
+    @apply font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.02] font-bold tracking-tight;
   }
   .display-lg {
-    @apply font-display text-4xl sm:text-5xl leading-[1.05] font-medium;
+    @apply font-display text-4xl sm:text-5xl leading-[1.05] font-bold tracking-tight;
   }
   .ribbon {
     background: linear-gradient(

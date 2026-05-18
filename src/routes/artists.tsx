@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Music, Mic2, Users } from "lucide-react";
+import { Mic2, Users, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/artists")({
   head: () => ({
     meta: [
       { title: "Artists — Perform at NUFF | Niagara Ukrainian Family Festival" },
-      { name: "description", content: "Apply to perform at NUFF 2026. Two stages, traditional and contemporary acts, full hospitality and tech rider support." },
+      { name: "description", content: "Apply to perform at NUFF 2026 on the main stage. Traditional and contemporary acts, full hospitality and tech rider support." },
     ],
   }),
 });
@@ -81,13 +81,13 @@ function ArtistsPage() {
       <PageHeader
         eyebrow="Perform at NUFF"
         title="Take the NUFF stage"
-        subtitle="Two stages, three days, a packed crowd of families and culture lovers. We program traditional Ukrainian acts alongside contemporary voices."
+        subtitle="One main stage, two days, a packed crowd of families and culture lovers. We program traditional Ukrainian acts alongside contemporary voices."
       />
 
       <section className="container-page py-12 grid lg:grid-cols-3 gap-6">
         {[
-          { icon: Mic2, title: "Main stage", body: "Full PA, monitors, backline, lighting rig. Headliner and feature slots." },
-          { icon: Music, title: "Community stage", body: "Acoustic-friendly, mid-sized PA. Folk, choir, ensemble, and emerging artists." },
+          { icon: Mic2, title: "Main stage", body: "Our single main stage — full PA, monitors, backline, lighting rig. Headliner, feature, and emerging slots throughout the weekend." },
+          { icon: Calendar, title: "July 12–13, 2026", body: "Two-day festival at Fireman's Park, Niagara Falls. Set lengths from 20 to 60 minutes." },
           { icon: Users, title: "What you get", body: "Hospitality, parking, vendor passes for your crew, and a connected Niagara audience." },
         ].map((s) => (
           <div key={s.title} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
@@ -130,13 +130,13 @@ function ArtistsPage() {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label>Stage preference</Label>
+              <Label>Preferred day</Label>
               <Select value={form.stage_preference} onValueChange={(v) => setForm({ ...form, stage_preference: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="main">Main stage</SelectItem>
-                  <SelectItem value="acoustic">Community stage</SelectItem>
-                  <SelectItem value="kids">Kids' Zone</SelectItem>
+                  <SelectItem value="sun-jul-12">Sunday · July 12</SelectItem>
+                  <SelectItem value="mon-jul-13">Monday · July 13</SelectItem>
+                  <SelectItem value="either">Either day</SelectItem>
                 </SelectContent>
               </Select>
             </div>

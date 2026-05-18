@@ -64,13 +64,13 @@ function ArtistApply() {
           <div><Label>Portfolio links (one per line)</Label><Textarea rows={3} placeholder="https://youtube.com/..." value={form.portfolio_links} onChange={(e) => setForm({ ...form, portfolio_links: e.target.value })} /></div>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label>Stage preference</Label>
+              <Label>Preferred day</Label>
               <Select value={form.stage_preference} onValueChange={(v) => setForm({ ...form, stage_preference: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="main">Main stage</SelectItem>
-                  <SelectItem value="acoustic">Acoustic stage</SelectItem>
-                  <SelectItem value="kids">Kids' Zone</SelectItem>
+                  <SelectItem value="sun-jul-12">Sunday · July 12</SelectItem>
+                  <SelectItem value="mon-jul-13">Monday · July 13</SelectItem>
+                  <SelectItem value="either">Either day</SelectItem>
                 </SelectContent>
               </Select>
             </div>
