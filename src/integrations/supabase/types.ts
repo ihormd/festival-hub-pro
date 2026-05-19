@@ -95,6 +95,48 @@ export type Database = {
         }
         Relationships: []
       }
+      festival_schedule: {
+        Row: {
+          active: boolean
+          area: string | null
+          created_at: string
+          day: Database["public"]["Enums"]["festival_day"]
+          description: string | null
+          end_time: string | null
+          id: string
+          sort_order: number
+          start_time: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          area?: string | null
+          created_at?: string
+          day: Database["public"]["Enums"]["festival_day"]
+          description?: string | null
+          end_time?: string | null
+          id?: string
+          sort_order?: number
+          start_time: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          area?: string | null
+          created_at?: string
+          day?: Database["public"]["Enums"]["festival_day"]
+          description?: string | null
+          end_time?: string | null
+          id?: string
+          sort_order?: number
+          start_time?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       merch_order_items: {
         Row: {
           id: string
@@ -460,6 +502,68 @@ export type Database = {
           },
         ]
       }
+      vendor_bookings: {
+        Row: {
+          amount_cents: number
+          business_name: string | null
+          contact_email: string
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          order_number: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          pending_until: string | null
+          spot_id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          business_name?: string | null
+          contact_email: string
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          order_number: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          pending_until?: string | null
+          spot_id: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          business_name?: string | null
+          contact_email?: string
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          order_number?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          pending_until?: string | null
+          spot_id?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_bookings_spot_id_fkey"
+            columns: ["spot_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_spots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vendor_spots: {
         Row: {
           code: string
@@ -591,6 +695,65 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      book_vendor_spot: {
+        Args: {
+          _business_name: string
+          _contact_email: string
+          _contact_name: string
+          _contact_phone: string
+          _method: Database["public"]["Enums"]["payment_method"]
+          _spot_id: string
+        }
+        Returns: {
+          amount_cents: number
+          business_name: string | null
+          contact_email: string
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          order_number: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          pending_until: string | null
+          spot_id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "vendor_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      confirm_vendor_booking: {
+        Args: { _booking_id: string }
+        Returns: {
+          amount_cents: number
+          business_name: string | null
+          contact_email: string
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          order_number: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          pending_until: string | null
+          spot_id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "vendor_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -598,11 +761,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      release_expired_vendor_holds: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "vendor" | "artist" | "volunteer" | "donor"
       application_status: "pending" | "approved" | "rejected" | "cancelled"
+      booking_status: "pending" | "paid" | "expired" | "cancelled"
+      festival_day: "saturday" | "sunday"
       order_status: "pending" | "paid" | "fulfilled" | "cancelled" | "refunded"
+      payment_method: "stripe" | "etransfer"
       payment_status: "pending" | "paid" | "failed" | "refunded"
       sponsor_level: "platinum" | "gold" | "silver" | "bronze"
       sponsor_tier: "bronze" | "silver" | "gold" | "platinum" | "custom"
@@ -736,7 +903,10 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "vendor", "artist", "volunteer", "donor"],
       application_status: ["pending", "approved", "rejected", "cancelled"],
+      booking_status: ["pending", "paid", "expired", "cancelled"],
+      festival_day: ["saturday", "sunday"],
       order_status: ["pending", "paid", "fulfilled", "cancelled", "refunded"],
+      payment_method: ["stripe", "etransfer"],
       payment_status: ["pending", "paid", "failed", "refunded"],
       sponsor_level: ["platinum", "gold", "silver", "bronze"],
       sponsor_tier: ["bronze", "silver", "gold", "platinum", "custom"],
