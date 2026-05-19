@@ -31,8 +31,8 @@ const ROLES = [
 ];
 
 const DAYS = [
+  { value: "sat-jul-11", label: "Saturday · July 11" },
   { value: "sun-jul-12", label: "Sunday · July 12" },
-  { value: "mon-jul-13", label: "Monday · July 13" },
   { value: "both", label: "Both days" },
 ];
 

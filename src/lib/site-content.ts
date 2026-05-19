@@ -6,7 +6,7 @@ export type SiteSettings = Record<string, string>;
 const DEFAULTS: SiteSettings = {
   festival_name: "Niagara Ukrainian Family Festival",
   festival_short_name: "NUFF",
-  festival_dates: "July 12–13, 2026",
+  festival_dates: "July 11–12, 2026",
   festival_year: "2026",
   location_name: "Fireman's Park",
   location_address: "2275 Dorchester Road, Niagara Falls, ON",
@@ -14,7 +14,7 @@ const DEFAULTS: SiteSettings = {
   hero_subtitle: "Two days of music, dance, food, craft, and community at Fireman's Park.",
   about_mission: "",
   about_history: "",
-  contact_email: "info@nuff.ca",
+  contact_email: "info@niagarka.ca",
   contact_phone: "",
   google_maps_embed: "",
 };

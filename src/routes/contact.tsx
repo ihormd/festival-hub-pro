@@ -9,6 +9,8 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useSiteSettings } from "@/lib/site-content";
+import { useServerFn } from "@tanstack/react-start";
+import { sendFormNotification } from "@/lib/notify.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -23,19 +25,21 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const s = useSiteSettings();
   const [busy, setBusy] = useState(false);
+  const notify = useServerFn(sendFormNotification);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const name = String(fd.get("name") ?? "");
+    const email = String(fd.get("email") ?? "");
+    const subject = String(fd.get("subject") ?? "") || null;
+    const message = String(fd.get("message") ?? "");
     setBusy(true);
-    const { error } = await supabase.from("contact_messages").insert({
-      name: String(fd.get("name") ?? ""),
-      email: String(fd.get("email") ?? ""),
-      subject: String(fd.get("subject") ?? "") || null,
-      message: String(fd.get("message") ?? ""),
-    });
+    const { error } = await supabase.from("contact_messages").insert({ name, email, subject, message });
+    if (error) { setBusy(false); return toast.error(error.message); }
+    // Fire-and-forget email
+    notify({ data: { kind: "contact", subject: subject || `Message from ${name}`, fields: { name, email, subject: subject || "" }, message } }).catch(() => {});
     setBusy(false);
-    if (error) return toast.error(error.message);
     toast.success("Thanks — we'll be in touch shortly.");
     (e.target as HTMLFormElement).reset();
   };

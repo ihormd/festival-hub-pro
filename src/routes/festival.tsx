@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Calendar, MapPin, Clock, Car, Accessibility, ShieldCheck, Heart, Music, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 import memory1 from "@/assets/memory-1.jpg";
 import memory2 from "@/assets/memory-2.jpg";
 import memory3 from "@/assets/memory-3.jpg";
@@ -14,35 +16,40 @@ export const Route = createFileRoute("/festival")({
   head: () => ({
     meta: [
       { title: "Festival — NUFF | Niagara Ukrainian Family Festival" },
-      { name: "description", content: "History, mission, schedule, and visitor info for NUFF — two days of Ukrainian culture at Fireman's Park, Niagara Falls. July 12–13, 2026." },
+      { name: "description", content: "History, mission, schedule, and visitor info for NUFF — two days of Ukrainian culture at Fireman's Park, Niagara Falls. July 11–12, 2026." },
       { property: "og:title", content: "Festival — NUFF" },
     ],
   }),
 });
 
 const visit = [
-  { icon: Calendar, title: "Dates", body: "July 12–13, 2026 · two-day festival." },
+  { icon: Calendar, title: "Dates", body: "July 11–12, 2026 · two-day festival." },
   { icon: MapPin, title: "Location", body: "Fireman's Park, 2275 Dorchester Rd, Niagara Falls, ON." },
-  { icon: Clock, title: "Hours", body: "Sun 11:00–22:00 · Mon 11:00–20:00." },
+  { icon: Clock, title: "Hours", body: "Sat 11:00–22:00 · Sun 11:00–20:00." },
   { icon: Car, title: "Parking", body: "Free public parking on-site. Reserved bays for vendors and organizers." },
   { icon: Accessibility, title: "Accessibility", body: "Step-free routes, accessible washrooms, designated parking near the main gate." },
   { icon: ShieldCheck, title: "Safety", body: "On-site security, first aid, and a family-friendly Kids' Zone with splash play." },
 ];
 
-const scheduleOutline = [
-  { day: "Sunday — July 12", items: ["11:00 · Gates open · Vendor market", "12:00 · Opening ceremony & blessing", "13:00 · Bandura recital", "15:00 · Pysanky & embroidery workshops", "17:00 · Folk dance showcase", "20:00 · Headliner concert"] },
-  { day: "Monday — July 13", items: ["11:00 · Gates open", "12:00 · Vyshyvanka parade", "14:00 · Kids' choir & youth ensembles", "16:00 · Community concert", "18:00 · Closing performance", "20:00 · Festival closes"] },
-];
+type ScheduleRow = { id: string; day: "saturday" | "sunday"; start_time: string; end_time: string | null; title: string; area: string | null };
 
 const memories = [memory1, memory2, memory3, memory4, memory5, memory6];
 
 function FestivalPage() {
+  const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
+  useEffect(() => {
+    supabase.from("festival_schedule").select("id,day,start_time,end_time,title,area").eq("active", true).order("day").order("sort_order").then(({ data }) => setSchedule((data as ScheduleRow[]) ?? []));
+  }, []);
+  const days: { key: "saturday" | "sunday"; label: string }[] = [
+    { key: "saturday", label: "Saturday — July 11" },
+    { key: "sunday", label: "Sunday — July 12" },
+  ];
   return (
     <>
       <PageHeader
         eyebrow="The festival"
         title="Niagara Ukrainian Family Festival"
-        subtitle="Two days of music, dance, food, and tradition at Fireman's Park, Niagara Falls — July 12–13, 2026."
+        subtitle="Two days of music, dance, food, and tradition at Fireman's Park, Niagara Falls — July 11–12, 2026."
       />
 
       {/* Mission */}
@@ -112,14 +119,23 @@ function FestivalPage() {
         <p className="eyebrow">Schedule outline</p>
         <h2 className="font-display text-3xl mt-2 mb-10">Two days at a glance</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {scheduleOutline.map((d) => (
-            <div key={d.day} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
-              <div className="font-display text-xl text-[color:var(--primary)] mb-4">{d.day}</div>
-              <ul className="space-y-2 text-sm">
-                {d.items.map((i) => <li key={i} className="text-[color:var(--muted-foreground)]">{i}</li>)}
-              </ul>
-            </div>
-          ))}
+          {days.map((d) => {
+            const items = schedule.filter((r) => r.day === d.key);
+            return (
+              <div key={d.key} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
+                <div className="font-display text-xl text-[color:var(--primary)] mb-4">{d.label}</div>
+                <ul className="space-y-2 text-sm">
+                  {items.length === 0 && <li className="text-[color:var(--muted-foreground)]">Schedule coming soon.</li>}
+                  {items.map((r) => (
+                    <li key={r.id} className="text-[color:var(--muted-foreground)] flex gap-3">
+                      <span className="font-mono text-xs w-20 shrink-0 text-[color:var(--primary)]">{r.start_time.slice(0,5)}</span>
+                      <span><span className="text-[color:var(--foreground)] font-medium">{r.title}</span>{r.area && <span className="text-xs"> · {r.area}</span>}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
         <p className="mt-6 text-xs text-[color:var(--muted-foreground)]">Full lineup announced closer to the festival. Times subject to change.</p>
       </section>

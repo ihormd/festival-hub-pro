@@ -26,7 +26,7 @@ const lineup = [
 function Entertainment() {
   return (
     <>
-      <PageHeader eyebrow="Lineup" title="One main stage. Two unforgettable days." subtitle="Two days of live performances, workshops, and cultural showcases — July 12–13, 2026." />
+      <PageHeader eyebrow="Lineup" title="One main stage. Two unforgettable days." subtitle="Two days of live performances, workshops, and cultural showcases — July 11–12, 2026." />
       <section className="container-page py-16">
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           <div className="rounded-xl overflow-hidden border border-[color:var(--border)]">
