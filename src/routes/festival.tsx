@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Calendar, MapPin, Clock, Car, Accessibility, ShieldCheck, Heart, Music, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 import memory1 from "@/assets/memory-1.jpg";
 import memory2 from "@/assets/memory-2.jpg";
 import memory3 from "@/assets/memory-3.jpg";
@@ -23,16 +25,13 @@ export const Route = createFileRoute("/festival")({
 const visit = [
   { icon: Calendar, title: "Dates", body: "July 11–12, 2026 · two-day festival." },
   { icon: MapPin, title: "Location", body: "Fireman's Park, 2275 Dorchester Rd, Niagara Falls, ON." },
-  { icon: Clock, title: "Hours", body: "Sun 11:00–22:00 · Mon 11:00–20:00." },
+  { icon: Clock, title: "Hours", body: "Sat 11:00–22:00 · Sun 11:00–20:00." },
   { icon: Car, title: "Parking", body: "Free public parking on-site. Reserved bays for vendors and organizers." },
   { icon: Accessibility, title: "Accessibility", body: "Step-free routes, accessible washrooms, designated parking near the main gate." },
   { icon: ShieldCheck, title: "Safety", body: "On-site security, first aid, and a family-friendly Kids' Zone with splash play." },
 ];
 
-const scheduleOutline = [
-  { day: "Saturday — July 11", items: ["11:00 · Gates open · Vendor market", "12:00 · Opening ceremony & blessing", "13:00 · Bandura recital", "15:00 · Pysanky & embroidery workshops", "17:00 · Folk dance showcase", "20:00 · Headliner concert"] },
-  { day: "Sunday — July 12", items: ["11:00 · Gates open", "12:00 · Vyshyvanka parade", "14:00 · Kids' choir & youth ensembles", "16:00 · Community concert", "18:00 · Closing performance", "20:00 · Festival closes"] },
-];
+type ScheduleRow = { id: string; day: "saturday" | "sunday"; start_time: string; end_time: string | null; title: string; area: string | null };
 
 const memories = [memory1, memory2, memory3, memory4, memory5, memory6];
 
