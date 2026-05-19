@@ -21,7 +21,7 @@ export const bookVendorSpot = createServerFn({ method: "POST" })
       _method: data.method,
       _contact_name: data.contact_name,
       _contact_email: data.contact_email,
-      _contact_phone: data.contact_phone || null,
+      _contact_phone: data.contact_phone || "",
       _business_name: data.business_name,
     });
     if (error) throw new Error(error.message);
