@@ -14,6 +14,8 @@ import { useAuth } from "@/lib/auth-context";
 import { refreshSiteSettings } from "@/lib/site-content";
 import { toast } from "sonner";
 import { Trash2, Pencil, Plus } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { adminConfirmBookingAdmin, adminCancelBookingAdmin } from "@/lib/admin-booking.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: Admin,
@@ -34,21 +36,27 @@ function Admin() {
     <>
       <PageHeader eyebrow="Internal" title="Admin dashboard" />
       <section className="container-page py-8">
-        <Tabs defaultValue="vendors">
+        <Tabs defaultValue="bookings">
           <TabsList className="flex flex-wrap h-auto">
-            <TabsTrigger value="vendors">Vendors</TabsTrigger>
+            <TabsTrigger value="bookings">Vendor Bookings</TabsTrigger>
+            <TabsTrigger value="vendors">Vendor Apps</TabsTrigger>
             <TabsTrigger value="artists">Artists</TabsTrigger>
             <TabsTrigger value="volunteers">Volunteers</TabsTrigger>
             <TabsTrigger value="sponsorships">Sponsorships</TabsTrigger>
+            <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="schedule">Schedule</TabsTrigger>
             <TabsTrigger value="merch">Merch</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="sponsors">Sponsors</TabsTrigger>
-            <TabsTrigger value="settings">Site Settings</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
+          <TabsContent value="bookings"><BookingsManager /></TabsContent>
           <TabsContent value="vendors"><AppList table="vendor_applications" titleField="business_name" /></TabsContent>
           <TabsContent value="artists"><AppList table="artist_applications" titleField="stage_name" /></TabsContent>
           <TabsContent value="volunteers"><AppList table="volunteer_applications" titleField="full_name" /></TabsContent>
           <TabsContent value="sponsorships"><SponsorshipList /></TabsContent>
+          <TabsContent value="messages"><MessagesManager /></TabsContent>
+          <TabsContent value="schedule"><ScheduleManager /></TabsContent>
           <TabsContent value="merch"><MerchManager /></TabsContent>
           <TabsContent value="team"><TeamManager /></TabsContent>
           <TabsContent value="sponsors"><SponsorsManager /></TabsContent>
