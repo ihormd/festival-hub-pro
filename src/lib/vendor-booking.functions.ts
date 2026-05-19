@@ -33,13 +33,3 @@ export const bookVendorSpot = createServerFn({ method: "POST" })
       pending_until: string | null;
     };
   });
-
-export const adminConfirmBooking = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ booking_id: z.string().uuid() }).parse(input))
-  .handler(async ({ data, context }) => {
-    const { supabase } = context;
-    const { error } = await supabase.rpc("confirm_vendor_booking", { _booking_id: data.booking_id });
-    if (error) throw new Error(error.message);
-    return { ok: true };
-  });
