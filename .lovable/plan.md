@@ -1,65 +1,70 @@
+## Plan — NUFF backend & CMS expansion
 
-# NUFF 2026 — Full Transformation Plan
+### 1. Dates → July 11–12, 2026
+- Update `site_settings.festival_dates` value to "July 11–12, 2026".
+- Code sweep replacing "July 12–13" / "July 12, July 13" / "17–19" remnants in: `volunteers.tsx`, `artists.tsx`, `festival.tsx`, `index.tsx`, `apply.volunteer.tsx`, `apply.artist.tsx`, root SEO, footer.
 
-Massive scope, so I'll ship in 4 ordered phases. Each phase is independently testable. I'll do them all in this session unless you tell me to stop after a phase.
+### 2. Grant admin to ihor.m.dorosh@gmail.com
+- Look up `auth.users.id` for that email; `INSERT INTO user_roles (user_id, role) VALUES (<uid>, 'admin')` (idempotent via `ON CONFLICT`).
+- `/admin` is already gated by `_authenticated` layout. Add an `isAdmin` check inside the admin route — non-admins get redirected to `/dashboard`.
+- (RLS for admin tables is already wired through `has_role(auth.uid(),'admin')`.)
 
-## Phase 1 — Rebrand + Dynamic Content Foundation
+### 3. Public read for sponsors + merch
+- DB check: existing policies `sponsors_public_read` and `merch_public_read_active` already allow anon reads of `active=true` rows. No DB change needed.
+- Code check: the marquee fetch already works for anon. Verify `merch.tsx` and `PartnersStrip` are not behind an auth guard. If broken, fix at component level.
 
-**Branding**
-- Header/Footer: replace "Festua" text with `nuff-logo.png` (already saved).
-- Rename every "Festua" reference to **NUFF — Niagara Ukrainian Family Festival**.
-- Update color tokens in `src/styles.css`:
-  - Primary → Ukrainian Royal Blue `#0057B7`
-  - Secondary/Accent → Sunflower Yellow `#FFD700`
-- Update page titles, meta descriptions, og tags.
+### 4. Vendor booking + Interac e-Transfer hold flow
+- New migration:
+  - `payment_method` enum: `stripe`, `etransfer`.
+  - `vendor_bookings` table: `id`, `user_id`, `spot_id`, `order_number` (short human code), `payment_method`, `payment_status` (`pending`/`paid`/`expired`/`cancelled`), `amount_cents`, `pending_until`, `contact_*`, timestamps. RLS: own select/insert, admin all.
+  - New status `pending` already exists on `vendor_spots`. Add server-side function `book_spot(spot_id, method)` (SECURITY DEFINER):
+    - If `available`: create booking row, set spot to `pending`, `pending_until = now() + 24h`, return order number + instructions.
+    - If `stripe`: returns Stripe checkout URL (built in step 6).
+  - `confirm_vendor_booking(booking_id)` admin-only → spot `occupied`, booking `paid`.
+  - pg_cron job every 5 min: release spots whose `pending_until < now()` and booking still `pending` → spot back to `available`, booking → `expired`.
+- Vendor map UI:
+  - Click available spot → modal asks: "Pay by card (Stripe)" or "Pay by Interac e-Transfer".
+  - e-Transfer path → confirmation screen with: order #, amount, send to `info@niagarka.ca`, memo = order #, 24h deadline.
+  - Pending spots become non-clickable (already filtered visually).
 
-**New Supabase tables** (one migration)
-- `team_members` — name, role, bio, image_url, sort_order
-- `sponsors` — name, logo_url, website_url, level (`platinum|gold|silver|bronze`), sort_order
-- `site_settings` — key/value (festival_dates, location_address, about_text, contact_email, contact_phone, hero_tagline…)
-- Seed: 6 board members (Irena Shantz, Michael Saciuk, Oksana Fischer, Luba Novosad, Stefan Fischer, Andrew Novosad), site_settings defaults, location = Fireman's Park, 2275 Dorchester Road, Niagara Falls.
-- New storage buckets: `team-photos` (public), `sponsor-logos` already exists.
-- RLS: public read for all 3 tables; admin-only write.
+### 5. Festival Schedule CMS
+- New `festival_schedule` table: `id`, `day` (`saturday`|`sunday`), `start_time`, `end_time`, `title`, `description`, `area`, `sort_order`, `active`. Public read; admin all.
+- Public `/festival` page loads schedule and renders Saturday + Sunday columns.
+- Admin tab "Schedule" with add/edit/delete.
 
-**Replace hardcoded content** on landing, festival-info, sponsors, entertainment with DB reads.
+### 6. Stripe (BYOK) for Merch + Vendor card option
+- Enable BYOK Stripe integration → ask user to paste `STRIPE_SECRET_KEY`.
+- Server function `createCheckoutSession({ kind: 'merch'|'vendor_booking', payload })` calls Stripe. Returns URL.
+- Public webhook route `/api/public/stripe-webhook` (HMAC-verified with `STRIPE_WEBHOOK_SECRET`) marks `merch_orders.status=paid` or `vendor_bookings.payment_status=paid` + spot `occupied`.
+- Apple Pay / Google Pay are automatic on Stripe Checkout.
 
-## Phase 2 — New Pages + Animations
+### 7. Email notifications via Resend
+- Connect Resend (standard connector) → ask for `RESEND_API_KEY`.
+- Server function `sendFormNotification({ kind, data })`. From: `NUFF Notifications <onboarding@resend.dev>`. To: `niagarka@gmail.com`, CC: `ihorledger@gmail.com`. Subject prefixed `[NUFF · <kind>]`.
+- Wire into: artist application, volunteer application, vendor application/booking, sponsor application, contact form. Fire-and-forget — DB insert is the source of truth.
 
-- `/about` — mission + history of the Niagara Ukrainian community, board grid pulled from `team_members`.
-- `/contact` — functional form (writes to a `contact_messages` table), Google Maps iframe for Fireman's Park.
-- Homepage: add **"Our Partners"** grid before footer (Platinum logos larger).
-- Homepage: add **Board of Directors** section.
-- Animations with `framer-motion`:
-  - Hero logo fade-in + scale 1→1.05 over 0.8s
-  - Staggered slide-up on Board cards + Merch grid (on scroll)
-  - Available map spots: subtle pulse + hover brighten
-  - All CTAs: `whileTap={{ scale: 0.95 }}`
+### 8. Google Sign-In
+- Call `configure_social_auth(['google'])` → uses Lovable's managed OAuth. No keys needed from user.
+- `Login`/`Signup` already have the button wired through `lovable.auth.signInWithOAuth('google', ...)`. Confirm imports are correct.
 
-## Phase 3 — Vendor Map Redesign + Sponsors Page
+### 9. Admin CMS additions
+- Already exists: Vendors, Artists, Volunteers, Sponsorships, Merch, Team, Sponsors, Site Settings.
+- Add tabs: **Schedule** (festival_schedule CRUD), **Vendor Bookings** (list pending + "Confirm Payment" / "Cancel" buttons), **Contact Messages** (mark handled).
 
-- `/vendors` layout: map left, scrollable sidebar list right. Click sidebar → highlight + open spot dialog. Real-time status already wired.
-- `/sponsors` rebuilt to read from DB, grouped by level (Platinum → Gold → Silver), with "Partner with NUFF 2026" CTA → `/contact`.
+### Out of scope (skipped)
+- Google Sheets sync — you didn't provide a webhook URL. Easy to add later: one Make.com "Catch Webhook" + 5 lines per form.
+- Custom email domain (would require DNS verification).
 
-## Phase 4 — Admin CMS (`/admin`)
+### Order of execution
+1. Migration: admin grant + festival_schedule + vendor_bookings + payment_method enum + cron release job.
+2. Date sweep + code edits.
+3. Stripe BYOK enable → request key.
+4. Resend connect → request key.
+5. Google managed OAuth.
+6. UI: vendor map booking modal, e-Transfer confirmation screen, schedule public view, admin tabs.
+7. Stripe webhook + Resend notification server fns.
 
-Tabs added to existing admin (already gated by `isAdmin`):
-- **Merch Manager** — CRUD `merch_products` + image upload to `merch-images`.
-- **Team Manager** — CRUD `team_members` + photo upload to `team-photos`.
-- **Sponsors Manager** — CRUD `sponsors` + logo upload to `sponsor-logos`.
-- **Site Settings** — form for dates, location, about text, hero tagline.
-- **Vendor Leads** — already exists; add map-bookings view + manual spot status override.
-- Existing application approvals stay.
-
-## Phase 5 — Cart + Checkout (light)
-
-- Cart drawer with LocalStorage persistence is already in `cart-store.ts`. I'll wire a `CartDrawer` UI + checkout button.
-- "Buy" / Checkout: since you previously declined Stripe upgrade, I'll keep checkout **Stripe-ready** — a `createCheckoutSession` server fn stub that returns a friendly "Payments coming soon" toast and writes a pending `merch_orders` row. When you're ready to enable Stripe (either Lovable's built-in or your own keys), it's a one-file swap.
-
-## What I need to confirm before I start
-
-1. **Payments**: stay with the Stripe-ready stub for now, or do you want me to wire your own Stripe keys (BYOK)? If BYOK, have your `STRIPE_SECRET_KEY` ready.
-2. **Board photos**: I don't have headshots. OK to use stylized placeholder avatars (initials on brand-colored circles) that you replace via the admin panel later?
-3. **About page copy**: write a respectful generic "Niagara Ukrainian community mission/history" draft you can edit in Site Settings, or do you have copy to paste in?
-4. **Order**: ship all phases this session, or pause after Phase 1 (rebrand + dynamic data) for review?
-
-Reply with answers (or just "go with your defaults, all phases") and I'll execute.
+### Risk notes
+- The Stripe webhook and Resend send both need their respective secrets before they can be tested. I'll mark them clearly and you can paste keys as we go.
+- pg_cron + pg_net must be enabled (will be done in the migration).
+- I will NOT touch `src/integrations/supabase/*` generated files.
