@@ -14,14 +14,14 @@ export const Route = createFileRoute("/festival")({
   head: () => ({
     meta: [
       { title: "Festival — NUFF | Niagara Ukrainian Family Festival" },
-      { name: "description", content: "History, mission, schedule, and visitor info for NUFF — two days of Ukrainian culture at Fireman's Park, Niagara Falls. July 12–13, 2026." },
+      { name: "description", content: "History, mission, schedule, and visitor info for NUFF — two days of Ukrainian culture at Fireman's Park, Niagara Falls. July 11–12, 2026." },
       { property: "og:title", content: "Festival — NUFF" },
     ],
   }),
 });
 
 const visit = [
-  { icon: Calendar, title: "Dates", body: "July 12–13, 2026 · two-day festival." },
+  { icon: Calendar, title: "Dates", body: "July 11–12, 2026 · two-day festival." },
   { icon: MapPin, title: "Location", body: "Fireman's Park, 2275 Dorchester Rd, Niagara Falls, ON." },
   { icon: Clock, title: "Hours", body: "Sun 11:00–22:00 · Mon 11:00–20:00." },
   { icon: Car, title: "Parking", body: "Free public parking on-site. Reserved bays for vendors and organizers." },
@@ -30,8 +30,8 @@ const visit = [
 ];
 
 const scheduleOutline = [
-  { day: "Sunday — July 12", items: ["11:00 · Gates open · Vendor market", "12:00 · Opening ceremony & blessing", "13:00 · Bandura recital", "15:00 · Pysanky & embroidery workshops", "17:00 · Folk dance showcase", "20:00 · Headliner concert"] },
-  { day: "Monday — July 13", items: ["11:00 · Gates open", "12:00 · Vyshyvanka parade", "14:00 · Kids' choir & youth ensembles", "16:00 · Community concert", "18:00 · Closing performance", "20:00 · Festival closes"] },
+  { day: "Saturday — July 11", items: ["11:00 · Gates open · Vendor market", "12:00 · Opening ceremony & blessing", "13:00 · Bandura recital", "15:00 · Pysanky & embroidery workshops", "17:00 · Folk dance showcase", "20:00 · Headliner concert"] },
+  { day: "Sunday — July 12", items: ["11:00 · Gates open", "12:00 · Vyshyvanka parade", "14:00 · Kids' choir & youth ensembles", "16:00 · Community concert", "18:00 · Closing performance", "20:00 · Festival closes"] },
 ];
 
 const memories = [memory1, memory2, memory3, memory4, memory5, memory6];
@@ -42,7 +42,7 @@ function FestivalPage() {
       <PageHeader
         eyebrow="The festival"
         title="Niagara Ukrainian Family Festival"
-        subtitle="Two days of music, dance, food, and tradition at Fireman's Park, Niagara Falls — July 12–13, 2026."
+        subtitle="Two days of music, dance, food, and tradition at Fireman's Park, Niagara Falls — July 11–12, 2026."
       />
 
       {/* Mission */}

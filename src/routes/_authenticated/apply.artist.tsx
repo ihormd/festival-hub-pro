@@ -68,8 +68,8 @@ function ArtistApply() {
               <Select value={form.stage_preference} onValueChange={(v) => setForm({ ...form, stage_preference: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="sat-jul-11">Saturday · July 11</SelectItem>
                   <SelectItem value="sun-jul-12">Sunday · July 12</SelectItem>
-                  <SelectItem value="mon-jul-13">Monday · July 13</SelectItem>
                   <SelectItem value="either">Either day</SelectItem>
                 </SelectContent>
               </Select>

@@ -87,7 +87,7 @@ function ArtistsPage() {
       <section className="container-page py-12 grid lg:grid-cols-3 gap-6">
         {[
           { icon: Mic2, title: "Main stage", body: "Our single main stage — full PA, monitors, backline, lighting rig. Headliner, feature, and emerging slots throughout the weekend." },
-          { icon: Calendar, title: "July 12–13, 2026", body: "Two-day festival at Fireman's Park, Niagara Falls. Set lengths from 20 to 60 minutes." },
+          { icon: Calendar, title: "July 11–12, 2026", body: "Two-day festival at Fireman's Park, Niagara Falls. Set lengths from 20 to 60 minutes." },
           { icon: Users, title: "What you get", body: "Hospitality, parking, vendor passes for your crew, and a connected Niagara audience." },
         ].map((s) => (
           <div key={s.title} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6">
@@ -134,8 +134,8 @@ function ArtistsPage() {
               <Select value={form.stage_preference} onValueChange={(v) => setForm({ ...form, stage_preference: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="sat-jul-11">Saturday · July 11</SelectItem>
                   <SelectItem value="sun-jul-12">Sunday · July 12</SelectItem>
-                  <SelectItem value="mon-jul-13">Monday · July 13</SelectItem>
                   <SelectItem value="either">Either day</SelectItem>
                 </SelectContent>
               </Select>

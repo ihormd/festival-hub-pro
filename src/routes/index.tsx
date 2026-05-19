@@ -16,9 +16,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "NUFF — Niagara Ukrainian Family Festival 2026" },
-      { name: "description", content: "Two days of Ukrainian music, dance, food, and craft at Fireman's Park, Niagara Falls. July 12–13, 2026. Vendors, artists, volunteers, and sponsors welcome." },
+      { name: "description", content: "Two days of Ukrainian music, dance, food, and craft at Fireman's Park, Niagara Falls. July 11–12, 2026. Vendors, artists, volunteers, and sponsors welcome." },
       { property: "og:title", content: "NUFF — Niagara Ukrainian Family Festival 2026" },
-      { property: "og:description", content: "July 12–13, 2026 · Fireman's Park, Niagara Falls" },
+      { property: "og:description", content: "July 11–12, 2026 · Fireman's Park, Niagara Falls" },
       { property: "og:image", content: heroFestival },
     ],
   }),
