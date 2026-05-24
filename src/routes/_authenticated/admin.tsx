@@ -49,6 +49,8 @@ function Admin() {
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="sponsors">Sponsors</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="header">Header</TabsTrigger>
+            <TabsTrigger value="footer">Footer</TabsTrigger>
           </TabsList>
           <TabsContent value="bookings"><BookingsManager /></TabsContent>
           <TabsContent value="vendors"><AppList table="vendor_applications" titleField="business_name" /></TabsContent>
@@ -61,6 +63,8 @@ function Admin() {
           <TabsContent value="team"><TeamManager /></TabsContent>
           <TabsContent value="sponsors"><SponsorsManager /></TabsContent>
           <TabsContent value="settings"><SettingsManager /></TabsContent>
+          <TabsContent value="header"><HeaderManager /></TabsContent>
+          <TabsContent value="footer"><FooterManager /></TabsContent>
         </Tabs>
       </section>
     </>
@@ -615,5 +619,124 @@ function ScheduleDialog({ open, onOpenChange, editing, onSaved }: any) {
         <DialogFooter><Button onClick={save}>Save</Button></DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/* ---------------- Header Manager ---------------- */
+const HEADER_FIELDS: { key: string; label: string; hint?: string }[] = [
+  { key: "header_logo_alt", label: "Logo alt text" },
+  { key: "header_nav_festival", label: "Nav: Festival label" },
+  { key: "header_nav_entertainment", label: "Nav: Entertainment label" },
+  { key: "header_nav_merch", label: "Nav: Merch label" },
+  { key: "header_nav_about", label: "Nav: About label" },
+  { key: "header_nav_contact", label: "Nav: Contact label" },
+  { key: "header_nav_involved_label", label: "Dropdown button label", hint: "e.g. «Get Involved»" },
+  { key: "header_nav_artists_label", label: "Dropdown — Artists label" },
+  { key: "header_nav_artists_desc", label: "Dropdown — Artists description" },
+  { key: "header_nav_vendors_label", label: "Dropdown — Vendors label" },
+  { key: "header_nav_vendors_desc", label: "Dropdown — Vendors description" },
+  { key: "header_nav_volunteers_label", label: "Dropdown — Volunteers label" },
+  { key: "header_nav_volunteers_desc", label: "Dropdown — Volunteers description" },
+  { key: "header_nav_sponsors_label", label: "Dropdown — Sponsors label" },
+  { key: "header_nav_sponsors_desc", label: "Dropdown — Sponsors description" },
+];
+
+function HeaderManager() {
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    supabase.from("site_settings").select("key,value").then(({ data }) => {
+      const map: Record<string, string> = {};
+      (data ?? []).forEach((r: any) => { map[r.key] = r.value; });
+      setValues(map);
+    });
+  }, []);
+
+  const save = async () => {
+    setSaving(true);
+    const rows = HEADER_FIELDS.map((f) => ({ key: f.key, value: values[f.key] ?? "" }));
+    const { error } = await supabase.from("site_settings").upsert(rows, { onConflict: "key" });
+    setSaving(false);
+    if (error) return toast.error(error.message);
+    await refreshSiteSettings();
+    toast.success("Header settings saved — changes are live immediately");
+  };
+
+  return (
+    <div className="mt-6 space-y-4 max-w-2xl">
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-xl">Header</h2>
+        <p className="text-xs text-[color:var(--muted-foreground)]">Зміни застосовуються одразу після збереження</p>
+      </div>
+      <div className="rounded-lg border border-[color:var(--border)] p-4 mb-2 bg-[color:var(--muted)]/30">
+        <p className="text-sm text-[color:var(--muted-foreground)]">Тут ви можете редагувати всі написи в навігації: назви пунктів меню, підписи у спадаючому дропдауні «Get Involved», і альт-текст логотипу.</p>
+      </div>
+      {HEADER_FIELDS.map((f) => (
+        <div key={f.key}>
+          <Label>{f.label}</Label>
+          {f.hint && <p className="text-xs text-[color:var(--muted-foreground)] mb-1">{f.hint}</p>}
+          <Input value={values[f.key] ?? ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} />
+        </div>
+      ))}
+      <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Save header settings"}</Button>
+    </div>
+  );
+}
+
+/* ---------------- Footer Manager ---------------- */
+const FOOTER_FIELDS: { key: string; label: string; multiline?: boolean; hint?: string }[] = [
+  { key: "footer_tagline", label: "Tagline (під назвою фестивалю)", multiline: true },
+  { key: "footer_col1_title", label: "Заголовок першої колонки (Festival)" },
+  { key: "footer_col2_title", label: "Заголовок другої колонки (Get Involved)" },
+  { key: "footer_copyright", label: "Текст копірайту", hint: "Рік підставляється автоматично" },
+  { key: "footer_contact_display", label: "Контакт/регіон у нижньому рядку", hint: "e.g. info@niagarka.ca · Niagara Falls, Ontario 🇨🇦 🇺🇦" },
+  { key: "seo_title", label: "SEO: заголовок сторінки (title)" },
+  { key: "seo_description", label: "SEO: опис (meta description)", multiline: true },
+];
+
+function FooterManager() {
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    supabase.from("site_settings").select("key,value").then(({ data }) => {
+      const map: Record<string, string> = {};
+      (data ?? []).forEach((r: any) => { map[r.key] = r.value; });
+      setValues(map);
+    });
+  }, []);
+
+  const save = async () => {
+    setSaving(true);
+    const rows = FOOTER_FIELDS.map((f) => ({ key: f.key, value: values[f.key] ?? "" }));
+    const { error } = await supabase.from("site_settings").upsert(rows, { onConflict: "key" });
+    setSaving(false);
+    if (error) return toast.error(error.message);
+    await refreshSiteSettings();
+    toast.success("Footer settings saved — changes are live immediately");
+  };
+
+  return (
+    <div className="mt-6 space-y-4 max-w-2xl">
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-xl">Footer</h2>
+        <p className="text-xs text-[color:var(--muted-foreground)]">Зміни застосовуються одразу після збереження</p>
+      </div>
+      <div className="rounded-lg border border-[color:var(--border)] p-4 mb-2 bg-[color:var(--muted)]/30">
+        <p className="text-sm text-[color:var(--muted-foreground)]">Назви пунктів посилань у футері успадковуються з налаштувань Header — редагуйте їх там. Тут керуйте заголовками колонок, тегліном, копірайтом і SEO.</p>
+      </div>
+      {FOOTER_FIELDS.map((f) => (
+        <div key={f.key}>
+          <Label>{f.label}</Label>
+          {f.hint && <p className="text-xs text-[color:var(--muted-foreground)] mb-1">{f.hint}</p>}
+          {f.multiline
+            ? <Textarea value={values[f.key] ?? ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} rows={3} />
+            : <Input value={values[f.key] ?? ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} />
+          }
+        </div>
+      ))}
+      <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Save footer settings"}</Button>
+    </div>
   );
 }

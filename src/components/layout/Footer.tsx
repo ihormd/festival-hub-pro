@@ -10,39 +10,39 @@ export function Footer() {
       <div className="container-page py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="NUFF" className="h-14 w-auto" />
+            <img src={logo} alt={s.festival_short_name} className="h-14 w-auto" />
             <div>
-              <div className="font-display text-2xl font-bold tracking-tight text-[color:var(--primary)]">NUFF</div>
-              <div className="text-xs uppercase tracking-[0.14em] text-[color:var(--muted-foreground)]">Niagara Ukrainian Family Festival</div>
+              <div className="font-display text-2xl font-bold tracking-tight text-[color:var(--primary)]">{s.festival_short_name}</div>
+              <div className="text-xs uppercase tracking-[0.14em] text-[color:var(--muted-foreground)]">{s.festival_name}</div>
             </div>
           </div>
           <p className="mt-4 text-sm text-[color:var(--muted-foreground)] max-w-md">
-            {s.festival_dates} · {s.location_name}, Niagara Falls. A celebration of Ukrainian heritage in the heart of Niagara.
+            {s.festival_dates} · {s.location_name}, Niagara Falls. {s.footer_tagline}
           </p>
         </div>
         <div>
-          <div className="eyebrow mb-3">Festival</div>
+          <div className="eyebrow mb-3">{s.footer_col1_title}</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/festival">Schedule & Location</Link></li>
-            <li><Link to="/entertainment">Entertainment</Link></li>
-            <li><Link to="/merch">Merch Store</Link></li>
-            <li><Link to="/about">About NUFF</Link></li>
+            <li><Link to="/festival">{s.header_nav_festival}</Link></li>
+            <li><Link to="/entertainment">{s.header_nav_entertainment}</Link></li>
+            <li><Link to="/merch">{s.header_nav_merch}</Link></li>
+            <li><Link to="/about">{s.header_nav_about}</Link></li>
           </ul>
         </div>
         <div>
-          <div className="eyebrow mb-3">Get involved</div>
+          <div className="eyebrow mb-3">{s.footer_col2_title}</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/vendors">Apply as Vendor</Link></li>
-            <li><Link to="/volunteers">Volunteer</Link></li>
-            <li><Link to="/sponsors">Sponsor</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/vendors">{s.header_nav_vendors_label}</Link></li>
+            <li><Link to="/volunteers">{s.header_nav_volunteers_label}</Link></li>
+            <li><Link to="/sponsors">{s.header_nav_sponsors_label}</Link></li>
+            <li><Link to="/contact">{s.header_nav_contact}</Link></li>
           </ul>
         </div>
       </div>
       <div className="border-t border-[color:var(--border)]">
         <div className="container-page py-5 flex flex-col sm:flex-row justify-between gap-2 text-xs text-[color:var(--muted-foreground)]">
-          <div>© {new Date().getFullYear()} Niagara Ukrainian Family Festival. All rights reserved.</div>
-          <div>{s.contact_email} · Niagara Falls, Ontario 🇨🇦 🇺🇦</div>
+          <div>© {new Date().getFullYear()} {s.footer_copyright}</div>
+          <div>{s.footer_contact_display}</div>
         </div>
       </div>
     </footer>

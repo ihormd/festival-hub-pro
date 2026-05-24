@@ -1,14 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+const RESEND_API_URL = "https://api.resend.com/emails";
 
 const PayloadSchema = z.object({
   kind: z.enum(["contact", "volunteer", "artist", "vendor", "sponsor", "vendor_booking"]),
   subject: z.string().min(1).max(200),
-  // Plain key/value pairs to render as an email body.
   fields: z.record(z.string().min(1).max(100), z.string().max(5000)).default({}),
-  // Optional plain-text message body (for contact form etc.)
   message: z.string().max(8000).optional(),
 });
 
@@ -42,10 +40,9 @@ function escapeHtml(s: string) {
 export const sendFormNotification = createServerFn({ method: "POST" })
   .inputValidator((input) => PayloadSchema.parse(input))
   .handler(async ({ data }) => {
-    const LOVABLE_API_KEY = process.env.LOVABLE_API_KEY;
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    if (!LOVABLE_API_KEY || !RESEND_API_KEY) {
-      console.warn("[notify] missing keys, skip send");
+    if (!RESEND_API_KEY) {
+      console.warn("[notify] missing RESEND_API_KEY, skip send");
       return { sent: false, reason: "missing-keys" as const };
     }
 
@@ -58,15 +55,15 @@ export const sendFormNotification = createServerFn({ method: "POST" })
       html: renderHtml(data.kind, data.subject, data.fields, data.message),
     };
 
-    const res = await fetch(`${GATEWAY_URL}/emails`, {
+    const res = await fetch(RESEND_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "X-Connection-Api-Key": RESEND_API_KEY,
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify(body),
     });
+
     if (!res.ok) {
       const text = await res.text();
       console.error("[notify] resend error", res.status, text);

@@ -4,35 +4,37 @@ import { Menu, X, User as UserIcon, ShoppingBag, ChevronDown } from "lucide-reac
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart-store";
+import { useSiteSettings } from "@/lib/site-content";
 import logo from "@/assets/nuff-logo.png";
-
-const mainNav = [
-  { to: "/festival", label: "Festival" },
-  { to: "/entertainment", label: "Entertainment" },
-  { to: "/merch", label: "Merch" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-] as const;
-
-const involvedNav = [
-  { to: "/artists", label: "Artists", desc: "Apply to perform on stage" },
-  { to: "/vendors", label: "Vendors", desc: "Reserve a booth on the live map" },
-  { to: "/volunteers", label: "Volunteers", desc: "Pick a shift, choose your role" },
-  { to: "/sponsors", label: "Sponsors", desc: "Partner with NUFF 2026" },
-] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [involvedOpen, setInvolvedOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
   const items = useCart();
-  const cartCount = items.reduce((s, i) => s + i.qty, 0);
+  const s = useSiteSettings();
+  const cartCount = items.reduce((sum, i) => sum + i.qty, 0);
+
+  const mainNav = [
+    { to: "/festival", label: s.header_nav_festival },
+    { to: "/entertainment", label: s.header_nav_entertainment },
+    { to: "/merch", label: s.header_nav_merch },
+    { to: "/about", label: s.header_nav_about },
+    { to: "/contact", label: s.header_nav_contact },
+  ] as const;
+
+  const involvedNav = [
+    { to: "/artists", label: s.header_nav_artists_label, desc: s.header_nav_artists_desc },
+    { to: "/vendors", label: s.header_nav_vendors_label, desc: s.header_nav_vendors_desc },
+    { to: "/volunteers", label: s.header_nav_volunteers_label, desc: s.header_nav_volunteers_desc },
+    { to: "/sponsors", label: s.header_nav_sponsors_label, desc: s.header_nav_sponsors_desc },
+  ] as const;
 
   return (
     <header className="sticky top-0 z-40 border-b border-[color:var(--border)] bg-[color:var(--background)]/90 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/75">
       <div className="container-page flex h-20 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center shrink-0" aria-label="NUFF home">
-          <img src={logo} alt="NUFF — Niagara Ukrainian Family Festival" className="h-14 w-auto" />
+        <Link to="/" className="flex items-center shrink-0" aria-label={s.header_logo_alt}>
+          <img src={logo} alt={s.header_logo_alt} className="h-14 w-auto" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-7">
@@ -47,7 +49,6 @@ export function Header() {
             </Link>
           ))}
 
-          {/* Get Involved dropdown */}
           <div
             className="relative"
             onMouseEnter={() => setInvolvedOpen(true)}
@@ -57,7 +58,7 @@ export function Header() {
               onClick={() => setInvolvedOpen((o) => !o)}
               className="inline-flex items-center gap-1 text-sm font-medium text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors"
             >
-              Get Involved <ChevronDown className={`h-4 w-4 transition-transform ${involvedOpen ? "rotate-180" : ""}`} />
+              {s.header_nav_involved_label} <ChevronDown className={`h-4 w-4 transition-transform ${involvedOpen ? "rotate-180" : ""}`} />
             </button>
             {involvedOpen && (
               <div className="absolute right-0 top-full pt-3 w-72 z-50">
@@ -112,7 +113,7 @@ export function Header() {
                 {n.label}
               </Link>
             ))}
-            <div className="px-2 pt-3 pb-1 text-xs uppercase tracking-wider text-[color:var(--muted-foreground)] font-semibold">Get Involved</div>
+            <div className="px-2 pt-3 pb-1 text-xs uppercase tracking-wider text-[color:var(--muted-foreground)] font-semibold">{s.header_nav_involved_label}</div>
             {involvedNav.map((n) => (
               <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="px-2 py-2 rounded-md text-base hover:bg-[color:var(--muted)]">
                 {n.label}
