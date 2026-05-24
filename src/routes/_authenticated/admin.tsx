@@ -23,8 +23,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 function Admin() {
-  const { isAdmin, loading } = useAuth();
-  if (loading) return <div className="container-page py-12">Loading…</div>;
+  const { isAdmin, loading, adminLoading } = useAuth();
+  if (loading || adminLoading) return <div className="container-page py-12">Loading…</div>;
   if (!isAdmin)
     return (
       <div className="container-page py-12">
