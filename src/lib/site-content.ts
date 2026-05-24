@@ -61,7 +61,7 @@ export const DEFAULTS: SiteSettings = {
 
   // ── Home — Pillars ───────────────────────────────────────────────────────
   home_pillars_eyebrow: "What to expect",
-  home_pillars_heading: "Four days of culture — two full days of celebration.",
+  home_pillars_heading: "Four pillars of the festival.",
   home_pillar_food_title: "Food & Drink",
   home_pillar_food_body: "Borsch, perogies, kovbasa, and craft beverages from local Ukrainian vendors.",
   home_pillar_music_title: "Music & Dance",
@@ -93,46 +93,44 @@ export const DEFAULTS: SiteSettings = {
   about_history: "",
 
   // ── Festival page ────────────────────────────────────────────────────────
-  festival_eyebrow: "The festival",
-  festival_title: "Niagara Ukrainian Family Festival",
-  festival_subtitle: "Two days of music, dance, food, and tradition at Fireman's Park, Niagara Falls — July 11–12, 2026.",
-  festival_mission_heading: "Our Cultural Mission",
+  festival_page_eyebrow: "The festival",
+  festival_page_title: "Niagara Ukrainian Family Festival",
+  festival_page_subtitle: "Two days of music, dance, food, and tradition at Fireman's Park, Niagara Falls — July 11–12, 2026.",
+  festival_mission_title: "Our Cultural Mission",
   festival_mission_body: "NUFF exists to celebrate, preserve, and share Ukrainian heritage across the Niagara region. Through music, dance, language, and craft, we create space for the Ukrainian diaspora and our neighbours of every background to gather, learn, and stand in solidarity. Every dollar raised supports cultural programming, youth ensembles, and humanitarian initiatives connected to Ukraine.",
-  festival_history_heading: "Festival History",
+  festival_history_title: "Festival History",
   festival_history_body: "Now in its fourth year, the Niagara Ukrainian Family Festival was founded by a coalition of community organizations, parishes, and dance schools across Niagara. From a one-day picnic, it has grown into a vibrant two-day weekend at Fireman's Park, welcoming thousands of visitors, dozens of artisans, and performers from across Canada and beyond.",
-
-  // Visit info
-  festival_visit_dates: "July 11–12, 2026 · two-day festival.",
-  festival_visit_location: "Fireman's Park, 2275 Dorchester Rd, Niagara Falls, ON.",
-  festival_visit_hours: "Sat 11:00–22:00 · Sun 11:00–20:00.",
-  festival_visit_parking: "Free public parking on-site. Reserved bays for vendors and organizers.",
-  festival_visit_accessibility: "Step-free routes, accessible washrooms, designated parking near the main gate.",
-  festival_visit_safety: "On-site security, first aid, and a family-friendly Kids' Zone with splash play.",
+  festival_community_eyebrow: "Community",
+  festival_community_title: "Rooted in the Niagara Ukrainian community.",
+  festival_community_body1: "NUFF is their festival. Volunteers come from St. George's, Sts. Cyril & Methodius, and other local organizations.",
+  festival_community_body2: "Newcomers from Ukraine join veteran organizers each year, and the programming reflects both deeply traditional and contemporary Ukrainian voices.",
+  festival_experience_title: "The NUFF experience",
+  festival_experience_items: "Live music on the main stage\nTraditional dance performances\nAuthentic Ukrainian food & drink\nArtisan craft market\nPysanka & embroidery workshops\nKids' zone & family activities",
+  festival_visit_eyebrow: "Plan your visit",
+  festival_visit_heading: "Everything you need to know.",
+  festival_visit_dates_title: "Dates",
+  festival_visit_dates_body: "July 11–12, 2026 · two-day festival.",
+  festival_visit_location_title: "Location",
+  festival_visit_location_body: "Fireman's Park, 2275 Dorchester Rd, Niagara Falls, ON.",
+  festival_visit_hours_title: "Hours",
+  festival_visit_hours_body: "Sat 11:00–22:00 · Sun 11:00–20:00.",
+  festival_visit_parking_title: "Parking",
+  festival_visit_parking_body: "Free public parking on-site. Reserved bays for vendors and organizers.",
+  festival_visit_accessibility_title: "Accessibility",
+  festival_visit_accessibility_body: "Step-free routes, accessible washrooms, designated parking near the main gate.",
+  festival_visit_safety_title: "Safety",
+  festival_visit_safety_body: "On-site security, first aid, and a family-friendly Kids' Zone with splash play.",
+  festival_memories_eyebrow: "Memories",
+  festival_memories_title: "From past festivals.",
+  festival_memories_body: "Moments captured at NUFF — community, culture, and celebration.",
 
   // ── Entertainment ────────────────────────────────────────────────────────
   entertainment_eyebrow: "Lineup",
   entertainment_title: "One main stage. Two unforgettable days.",
   entertainment_subtitle: "Two days of live performances, workshops, and cultural showcases — July 11–12, 2026.",
-
-  // ── Vendors ──────────────────────────────────────────────────────────────
-  vendors_eyebrow: "Vendor applications",
-  vendors_title: "Reserve your spot on the map.",
-  vendors_subtitle: "Pick your booth on NUFF's live festival map. Real-time availability for food, retail, and sponsor spots.",
-
-  // ── Artists ──────────────────────────────────────────────────────────────
-  artists_eyebrow: "Artists",
-  artists_title: "Apply to perform at NUFF 2026.",
-  artists_subtitle: "One main stage, two days, a packed crowd of families and culture lovers. We program traditional Ukrainian acts alongside contemporary voices.",
-
-  // ── Volunteers ───────────────────────────────────────────────────────────
-  volunteers_eyebrow: "Volunteer",
-  volunteers_title: "Join the NUFF crew.",
-  volunteers_subtitle: "Help us run the most welcoming festival in the region. Pick your roles, pick your days.",
-
-  // ── Sponsors ─────────────────────────────────────────────────────────────
-  sponsors_eyebrow: "Sponsorship",
-  sponsors_title: "Partner with NUFF 2026.",
-  sponsors_subtitle: "Support Ukrainian culture in Niagara. Tiered packages from Bronze to Platinum with stage recognition, booth presence, and digital placements.",
+  entertainment_schedule_title: "Full schedule",
+  entertainment_cta_title: "Want to perform?",
+  entertainment_cta_body: "We're still accepting artist applications for NUFF 2026.",
 
   // ── Contact ──────────────────────────────────────────────────────────────
   contact_eyebrow: "Contact",
