@@ -17,14 +17,14 @@ function AboutPage() {
   const s = useSiteSettings();
   return (
     <>
-      <PageHeader eyebrow="About NUFF" title="A festival born of community." subtitle="Honouring Ukrainian heritage in the Niagara region — through music, food, craft, and the people who carry it forward." />
+      <PageHeader eyebrow={s.about_eyebrow} title={s.about_title} subtitle={s.about_subtitle} />
       <section className="container-page py-16 grid lg:grid-cols-2 gap-12">
         <div>
-          <h2 className="font-display text-3xl font-semibold">Our mission</h2>
+          <h2 className="font-display text-3xl font-semibold">{s.about_mission_heading}</h2>
           <p className="mt-4 text-[color:var(--muted-foreground)] leading-relaxed whitespace-pre-line">{s.about_mission}</p>
         </div>
         <div>
-          <h2 className="font-display text-3xl font-semibold">Our history</h2>
+          <h2 className="font-display text-3xl font-semibold">{s.about_history_heading}</h2>
           <p className="mt-4 text-[color:var(--muted-foreground)] leading-relaxed whitespace-pre-line">{s.about_history}</p>
         </div>
       </section>

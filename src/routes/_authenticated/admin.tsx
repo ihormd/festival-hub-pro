@@ -51,6 +51,10 @@ function Admin() {
             <TabsTrigger value="settings">Settings</TabsTrigger>
             <TabsTrigger value="header">Header</TabsTrigger>
             <TabsTrigger value="footer">Footer</TabsTrigger>
+            <TabsTrigger value="page-home">🏠 Головна</TabsTrigger>
+            <TabsTrigger value="page-festival">🎪 Festival</TabsTrigger>
+            <TabsTrigger value="page-entertainment">🎵 Entertainment</TabsTrigger>
+            <TabsTrigger value="page-about">ℹ️ About</TabsTrigger>
           </TabsList>
           <TabsContent value="bookings"><BookingsManager /></TabsContent>
           <TabsContent value="vendors"><AppList table="vendor_applications" titleField="business_name" /></TabsContent>
@@ -65,6 +69,10 @@ function Admin() {
           <TabsContent value="settings"><SettingsManager /></TabsContent>
           <TabsContent value="header"><HeaderManager /></TabsContent>
           <TabsContent value="footer"><FooterManager /></TabsContent>
+          <TabsContent value="page-home"><HomePageManager /></TabsContent>
+          <TabsContent value="page-festival"><FestivalPageManager /></TabsContent>
+          <TabsContent value="page-entertainment"><EntertainmentPageManager /></TabsContent>
+          <TabsContent value="page-about"><AboutPageManager /></TabsContent>
         </Tabs>
       </section>
     </>
@@ -738,5 +746,170 @@ function FooterManager() {
       ))}
       <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Save footer settings"}</Button>
     </div>
+  );
+}
+
+/* ════════════════════════════════════════════════
+   UNIVERSAL SECTION EDITOR
+   ════════════════════════════════════════════════ */
+function SectionEditor({ title, hint, fields }: {
+  title: string;
+  hint?: string;
+  fields: { key: string; label: string; multiline?: boolean; hint?: string }[];
+}) {
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    supabase.from("site_settings").select("key,value").then(({ data }) => {
+      const map: Record<string, string> = {};
+      (data ?? []).forEach((r: any) => { map[r.key] = r.value; });
+      setValues(map);
+    });
+  }, []);
+
+  const save = async () => {
+    setSaving(true);
+    const rows = fields.map((f) => ({ key: f.key, value: values[f.key] ?? "" }));
+    const { error } = await supabase.from("site_settings").upsert(rows, { onConflict: "key" });
+    setSaving(false);
+    if (error) return toast.error(error.message);
+    await refreshSiteSettings();
+    toast.success("Збережено — зміни вступили в силу");
+  };
+
+  return (
+    <div className="mt-6 space-y-4 max-w-2xl">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h2 className="font-display text-xl">{title}</h2>
+        <span className="text-xs text-[color:var(--muted-foreground)]">Зміни застосовуються одразу</span>
+      </div>
+      {hint && <p className="text-sm text-[color:var(--muted-foreground)] bg-[color:var(--muted)]/30 rounded-lg p-3">{hint}</p>}
+      {fields.map((f) => (
+        <div key={f.key}>
+          <Label>{f.label}</Label>
+          {f.hint && <p className="text-xs text-[color:var(--muted-foreground)] mb-1">{f.hint}</p>}
+          {f.multiline
+            ? <Textarea value={values[f.key] ?? ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} rows={3} />
+            : <Input value={values[f.key] ?? ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} />
+          }
+        </div>
+      ))}
+      <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Зберегти"}</Button>
+    </div>
+  );
+}
+
+/* ── HOME PAGE EDITOR ─────────────────────────── */
+function HomePageManager() {
+  return (
+    <div className="space-y-10">
+      <SectionEditor title="Герой (Hero)" fields={[
+        { key: "hero_tagline", label: "Tagline" },
+        { key: "hero_subtitle", label: "Підзаголовок під назвою", multiline: true },
+        { key: "home_hero_cta_primary", label: "Кнопка 1 (основна)" },
+        { key: "home_hero_cta_secondary", label: "Кнопка 2 (вторинна)" },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Статистика (лічильники)" fields={[
+        { key: "home_stat_1_value", label: "Лічильник 1 — значення" }, { key: "home_stat_1_label", label: "Лічильник 1 — підпис" },
+        { key: "home_stat_2_value", label: "Лічильник 2 — значення" }, { key: "home_stat_2_label", label: "Лічильник 2 — підпис" },
+        { key: "home_stat_3_value", label: "Лічильник 3 — значення" }, { key: "home_stat_3_label", label: "Лічильник 3 — підпис" },
+        { key: "home_stat_4_value", label: "Лічильник 4 — значення" }, { key: "home_stat_4_label", label: "Лічильник 4 — підпис" },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Секція «What awaits you» (4 картки)" fields={[
+        { key: "home_pillars_eyebrow", label: "Eyebrow (рядок над заголовком)" },
+        { key: "home_pillars_heading", label: "Заголовок секції", multiline: true },
+        { key: "home_pillar_food_title", label: "Картка Food — назва" }, { key: "home_pillar_food_body", label: "Картка Food — текст", multiline: true },
+        { key: "home_pillar_music_title", label: "Картка Music — назва" }, { key: "home_pillar_music_body", label: "Картка Music — текст", multiline: true },
+        { key: "home_pillar_culture_title", label: "Картка Culture — назва" }, { key: "home_pillar_culture_body", label: "Картка Culture — текст", multiline: true },
+        { key: "home_pillar_family_title", label: "Картка Family — назва" }, { key: "home_pillar_family_body", label: "Картка Family — текст", multiline: true },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Секція «Be part of it» (4 посилання)" fields={[
+        { key: "home_involved_eyebrow", label: "Eyebrow" },
+        { key: "home_involved_heading", label: "Заголовок секції" },
+        { key: "home_involved_vendors_title", label: "Vendors — назва" }, { key: "home_involved_vendors_body", label: "Vendors — опис" },
+        { key: "home_involved_artists_title", label: "Artists — назва" }, { key: "home_involved_artists_body", label: "Artists — опис" },
+        { key: "home_involved_volunteers_title", label: "Volunteers — назва" }, { key: "home_involved_volunteers_body", label: "Volunteers — опис" },
+        { key: "home_involved_sponsors_title", label: "Sponsors — назва" }, { key: "home_involved_sponsors_body", label: "Sponsors — опис" },
+      ]} />
+    </div>
+  );
+}
+
+/* ── FESTIVAL PAGE EDITOR ─────────────────────── */
+function FestivalPageManager() {
+  return (
+    <div className="space-y-10">
+      <SectionEditor title="Заголовок сторінки" fields={[
+        { key: "festival_page_eyebrow", label: "Eyebrow" },
+        { key: "festival_page_title", label: "Заголовок" },
+        { key: "festival_page_subtitle", label: "Підзаголовок", multiline: true },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Місія та Історія" fields={[
+        { key: "festival_mission_title", label: "Заголовок «Місія»" },
+        { key: "festival_mission_body", label: "Текст місії", multiline: true },
+        { key: "festival_history_title", label: "Заголовок «Історія»" },
+        { key: "festival_history_body", label: "Текст історії", multiline: true },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Секція «Niagarka Community»" fields={[
+        { key: "festival_community_eyebrow", label: "Eyebrow" },
+        { key: "festival_community_title", label: "Заголовок" },
+        { key: "festival_community_body1", label: "Параграф 1", multiline: true },
+        { key: "festival_community_body2", label: "Параграф 2", multiline: true },
+        { key: "festival_experience_title", label: "Заголовок картки «What you'll experience»" },
+        { key: "festival_experience_items", label: "Пункти списку (кожен з нового рядка)", multiline: true },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Секція «Plan your visit» (6 карток)" fields={[
+        { key: "festival_visit_eyebrow", label: "Eyebrow" },
+        { key: "festival_visit_heading", label: "Заголовок" },
+        { key: "festival_visit_dates_title", label: "Картка Dates — назва" }, { key: "festival_visit_dates_body", label: "Картка Dates — текст" },
+        { key: "festival_visit_location_title", label: "Картка Location — назва" }, { key: "festival_visit_location_body", label: "Картка Location — текст" },
+        { key: "festival_visit_hours_title", label: "Картка Hours — назва" }, { key: "festival_visit_hours_body", label: "Картка Hours — текст" },
+        { key: "festival_visit_parking_title", label: "Картка Parking — назва" }, { key: "festival_visit_parking_body", label: "Картка Parking — текст" },
+        { key: "festival_visit_accessibility_title", label: "Картка Accessibility — назва" }, { key: "festival_visit_accessibility_body", label: "Картка Accessibility — текст" },
+        { key: "festival_visit_safety_title", label: "Картка Safety — назва" }, { key: "festival_visit_safety_body", label: "Картка Safety — текст" },
+      ]} />
+      <hr className="border-[color:var(--border)]" />
+      <SectionEditor title="Секція «Past festivals»" fields={[
+        { key: "festival_memories_eyebrow", label: "Eyebrow" },
+        { key: "festival_memories_title", label: "Заголовок" },
+        { key: "festival_memories_body", label: "Текст", multiline: true },
+      ]} />
+    </div>
+  );
+}
+
+/* ── ENTERTAINMENT PAGE EDITOR ────────────────── */
+function EntertainmentPageManager() {
+  return (
+    <SectionEditor title="Сторінка Entertainment" fields={[
+      { key: "entertainment_eyebrow", label: "Eyebrow" },
+      { key: "entertainment_title", label: "Заголовок" },
+      { key: "entertainment_subtitle", label: "Підзаголовок", multiline: true },
+      { key: "entertainment_schedule_title", label: "Заголовок розкладу" },
+      { key: "entertainment_cta_title", label: "CTA-блок — заголовок" },
+      { key: "entertainment_cta_body", label: "CTA-блок — текст", multiline: true },
+    ]} />
+  );
+}
+
+/* ── ABOUT PAGE EDITOR ───────────────────────── */
+function AboutPageManager() {
+  return (
+    <SectionEditor title="Сторінка About" fields={[
+      { key: "about_eyebrow", label: "Eyebrow" },
+      { key: "about_page_title", label: "Заголовок сторінки" },
+      { key: "about_page_subtitle", label: "Підзаголовок", multiline: true },
+      { key: "about_mission_title", label: "Заголовок «Місія»" },
+      { key: "about_mission", label: "Текст місії", multiline: true },
+      { key: "about_history_title", label: "Заголовок «Історія»" },
+      { key: "about_history", label: "Текст історії", multiline: true },
+    ]} />
   );
 }

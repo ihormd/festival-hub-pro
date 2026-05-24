@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
+import { useSiteSettings } from "@/lib/site-content";
 import stagePerformance from "@/assets/stage-performance.jpg";
 import culturePysanky from "@/assets/culture-pysanky.jpg";
 
@@ -24,16 +25,17 @@ const lineup = [
 ];
 
 function Entertainment() {
+  const s = useSiteSettings();
   return (
     <>
-      <PageHeader eyebrow="Lineup" title="One main stage. Two unforgettable days." subtitle="Two days of live performances, workshops, and cultural showcases — July 11–12, 2026." />
+      <PageHeader eyebrow={s.entertainment_eyebrow} title={s.entertainment_title} subtitle={s.entertainment_subtitle} />
       <section className="container-page py-16">
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           <div className="rounded-xl overflow-hidden border border-[color:var(--border)]">
             <img src={stagePerformance} alt="Festival stage performance" className="w-full h-80 object-cover" />
           </div>
           <div>
-            <h2 className="font-display text-2xl font-semibold mb-6">Schedule</h2>
+            <h2 className="font-display text-2xl font-semibold mb-6">{s.entertainment_schedule_title}</h2>
             <div className="divide-y divide-[color:var(--border)]">
               {lineup.map((l) => (
                 <div key={l.time + l.act} className="py-4 flex gap-4">
@@ -51,8 +53,8 @@ function Entertainment() {
       <section className="bg-[color:var(--muted)]/40 border-y border-[color:var(--border)]">
         <div className="container-page py-16 grid lg:grid-cols-2 gap-10 items-center">
           <div>
-            <h2 className="font-display text-3xl font-semibold mb-3">Calling all artists</h2>
-            <p className="text-[color:var(--muted-foreground)] mb-6">Apply to perform on our single main stage. Submit your portfolio links and tech rider.</p>
+            <h2 className="font-display text-3xl font-semibold mb-3">{s.entertainment_cta_title}</h2>
+            <p className="text-[color:var(--muted-foreground)] mb-6">{s.entertainment_cta_body}</p>
             <Link to="/apply/artist"><Button size="lg">Apply to Perform</Button></Link>
           </div>
           <img src={culturePysanky} alt="Pysanky" className="rounded-xl w-full h-72 object-cover" />
