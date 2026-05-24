@@ -1,10 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "festival-hub-pro",
+  "name": "tanstack-start-app",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "dist/server/server.js",
-  "assets": {
-    "directory": "dist/client"
-  }
+  "main": "src/server.ts",
 }
