@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "festival-hub-pro" generated at 2026-05-24T07:56:01.511Z.
