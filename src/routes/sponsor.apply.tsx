@@ -21,14 +21,27 @@ export const Route = createFileRoute("/sponsor/apply")({
 function SponsorApply() {
   const { tier } = useSearch({ from: "/sponsor/apply" });
   const { user } = useAuth();
-  const [form, setForm] = useState({ company_name: "", contact_name: "", contact_email: user?.email ?? "", website_url: "", message: "" });
+  const [form, setForm] = useState({ company_name: "", contact_name: "", contact_email: user?.email ?? "", website_url: "", message: "", logo_url: "" });
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const uploadLogo = async (file: File) => {
+    setUploading(true);
+    const path = `applications/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const { error } = await supabase.storage.from("sponsor-logos").upload(path, file, { upsert: true, contentType: file.type });
+    if (error) { setUploading(false); return toast.error(error.message); }
+    const { data } = supabase.storage.from("sponsor-logos").getPublicUrl(path);
+    setForm((f) => ({ ...f, logo_url: data.publicUrl }));
+    setUploading(false);
+    toast.success("Logo uploaded");
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.from("sponsorships").insert({
       ...form,
+      logo_url: form.logo_url || null,
       tier: tier as any,
       amount_cents: tierPrices[tier],
       user_id: user?.id ?? null,
@@ -50,11 +63,17 @@ function SponsorApply() {
             <div><Label>Contact email</Label><Input type="email" required value={form.contact_email} onChange={(e) => setForm({ ...form, contact_email: e.target.value })} /></div>
           </div>
           <div><Label>Website</Label><Input type="url" placeholder="https://" value={form.website_url} onChange={(e) => setForm({ ...form, website_url: e.target.value })} /></div>
+          <div>
+            <Label>Logo (PNG/SVG, transparent background preferred)</Label>
+            <Input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadLogo(e.target.files[0])} disabled={uploading} />
+            {form.logo_url && <img src={form.logo_url} alt="Logo preview" className="mt-3 h-16 object-contain" />}
+          </div>
           <div><Label>Message (optional)</Label><Textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></div>
-          <Button type="submit" disabled={loading} size="lg" className="w-full">{loading ? "Submitting…" : "Submit application"}</Button>
+          <Button type="submit" disabled={loading || uploading} size="lg" className="w-full">{loading ? "Submitting…" : "Submit application"}</Button>
           <p className="text-xs text-[color:var(--muted-foreground)] text-center">Secure online payment via Stripe will be enabled shortly. We'll send a payment link as soon as Stripe is connected.</p>
         </form>
       </section>
     </>
   );
 }
+

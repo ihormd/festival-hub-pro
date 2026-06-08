@@ -101,22 +101,45 @@ function AppList({ table, titleField }: { table: "vendor_applications" | "artist
 
 function SponsorshipList() {
   const [rows, setRows] = useState<any[]>([]);
-  useEffect(() => { supabase.from("sponsorships").select("*").order("created_at", { ascending: false }).then(({ data }) => setRows(data ?? [])); }, []);
+  const load = () => supabase.from("sponsorships").select("*").order("created_at", { ascending: false }).then(({ data }) => setRows(data ?? []));
+  useEffect(() => { load(); }, []);
+
+  const promote = async (r: any) => {
+    const { error } = await supabase.from("sponsors").insert({
+      name: r.company_name,
+      level: r.tier,
+      logo_url: r.logo_url || null,
+      website_url: r.website_url || null,
+      sort_order: 0,
+      active: true,
+    });
+    if (error) return toast.error(error.message);
+    toast.success("Added to partners carousel");
+  };
+
   return (
     <div className="mt-6 space-y-3">
       {rows.length === 0 && <p className="text-sm text-[color:var(--muted-foreground)]">No sponsorship inquiries yet.</p>}
       {rows.map((r) => (
         <div key={r.id} className="rounded-lg border border-[color:var(--border)] p-4 flex items-center gap-4">
+          {r.logo_url ? (
+            <img src={r.logo_url} alt={r.company_name} className="h-12 w-12 object-contain rounded bg-white border" />
+          ) : (
+            <div className="h-12 w-12 rounded bg-[color:var(--muted)] grid place-items-center text-[10px] text-[color:var(--muted-foreground)]">no logo</div>
+          )}
           <div className="flex-1">
             <div className="font-semibold">{r.company_name} <span className="text-xs uppercase ml-2 text-[color:var(--secondary)]">{r.tier}</span></div>
             <div className="text-xs text-[color:var(--muted-foreground)]">{r.contact_email} · ${(r.amount_cents/100).toLocaleString()} CAD</div>
+            {r.website_url && <a href={r.website_url} target="_blank" rel="noreferrer" className="text-xs text-[color:var(--primary)] underline">{r.website_url}</a>}
           </div>
           <Badge variant={r.payment_status === "paid" ? "default" : "secondary"}>{r.payment_status}</Badge>
+          <Button size="sm" variant="outline" onClick={() => promote(r)}>Add to carousel</Button>
         </div>
       ))}
     </div>
   );
 }
+
 
 /* ---------------- Merch ---------------- */
 function MerchManager() {
